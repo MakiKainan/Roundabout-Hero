@@ -1,3 +1,12 @@
+// Pause Toggle
+if (keyboard_check_pressed(vk_escape) || keyboard_check_pressed(ord("P"))) {
+    if (game_state == STATE_PLAYING) {
+        game_state = STATE_PAUSED;
+    } else if (game_state == STATE_PAUSED) {
+        game_state = STATE_PLAYING;
+    }
+}
+
 // Restart
 if (game_state == STATE_GAME_OVER && keyboard_check_pressed(ord("R"))) {
     with (par_enemy) instance_destroy();
@@ -17,6 +26,8 @@ if (game_state == STATE_GAME_OVER && keyboard_check_pressed(ord("R"))) {
 }
 
 if (game_state == STATE_PLAYING) {
+
+
     survival_timer++;
     score = floor(survival_timer / 60);
 

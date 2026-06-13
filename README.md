@@ -89,13 +89,13 @@ Controls can be customized in `configs/input_config.gml`
 - [x] Core game loop (knight movement, enemy spawning)
 - [x] Three enemy types with unique mechanics
 - [x] Difficulty scaling system
-- [ ] Collision detection and combat feedback
+- [x] Collision detection and combat feedback
 - [ ] Score tracking and game over state
 - [ ] Audio effects and background music
 - [ ] Visual polish (animations, particle effects)
 - [ ] Leaderboard / high score system
 - [ ] Mobile controls support
-- [ ] Pause menu
+- [x] Pause menu
 
 ## Design Philosophy
 

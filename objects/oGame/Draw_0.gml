@@ -42,3 +42,18 @@ if (game_state == STATE_GAME_OVER) {
     draw_text(ARENA_CENTER_X, ARENA_CENTER_Y + 45, "Press R to restart");
     draw_set_halign(fa_left);
 }
+
+// Pause overlay
+if (game_state == STATE_PAUSED) {
+    draw_set_color(c_black);
+    draw_set_alpha(0.5);
+    draw_rectangle(0, 0, room_width, room_height, false);
+    draw_set_alpha(1.0);
+
+    draw_set_color(c_white);
+    draw_set_halign(fa_center);
+    draw_text_transformed(ARENA_CENTER_X, ARENA_CENTER_Y - 20, "PAUSED", 2, 2, 0);
+    draw_text(ARENA_CENTER_X, ARENA_CENTER_Y + 20, "Press ESC or P to resume");
+    draw_set_halign(fa_left);
+}
+

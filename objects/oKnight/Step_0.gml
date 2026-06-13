@@ -15,8 +15,12 @@ if ((keyboard_check_pressed(ord("Z")) || mouse_check_button_pressed(mb_left))
                 instance_destroy(active);
                 break;
             case ENEMY_SHIELDED:
-                // Shield absorbs — miss penalty
-                attack_cooldown = ATTACK_COOLDOWN_FRAMES;
+                if (active.is_vulnerable) {
+                    instance_destroy(active);
+                } else {
+                    // Shield absorbs — miss penalty
+                    attack_cooldown = ATTACK_COOLDOWN_FRAMES;
+                }
                 break;
             case ENEMY_ASSASSIN:
                 if (!active.backstep_state) {
@@ -49,8 +53,14 @@ if ((keyboard_check_pressed(ord("X")) || mouse_check_button_pressed(mb_right))
     if (active != noone
         && active.enemy_type == ENEMY_SHIELDED
         && point_distance(x, y, active.x, active.y) <= ATTACK_RANGE) {
-        // Correct riposte — no cooldown
-        instance_destroy(active);
+        
+        if (!active.is_vulnerable) {
+            // Correct riposte — stun them, no cooldown
+            active.is_vulnerable = true;
+        } else {
+            // Failsafe use — already vulnerable
+            defend_cooldown = DEFEND_COOLDOWN_FRAMES;
+        }
     } else {
         // Failsafe use — 5s cooldown
         defend_cooldown = DEFEND_COOLDOWN_FRAMES;
