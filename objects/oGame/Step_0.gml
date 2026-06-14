@@ -39,7 +39,16 @@ if (game_state == STATE_PLAYING) {
         difficulty_multiplier += 0.1;
     }
 
-    if (instance_number(par_enemy) == 0) {
+    if (array_length(spawn_queue) > 0) {
+        if (spawn_timer > 0) {
+            spawn_timer--;
+        } else {
+            var enemy_data = spawn_queue[0];
+            array_delete(spawn_queue, 0, 1);
+            instance_create_layer(enemy_data.x, enemy_data.y, "Instances", get_enemy_object(enemy_data.type));
+            spawn_timer = ENEMY_SPAWN_DELAY_FRAMES;
+        }
+    } else if (instance_number(par_enemy) == 0) {
         game_state = STATE_WAVE_PAUSE;
         wave_pause_timer = WAVE_PAUSE_FRAMES;
     }

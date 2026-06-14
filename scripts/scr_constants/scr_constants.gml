@@ -34,6 +34,7 @@
 
 // Wave
 #macro WAVE_PAUSE_FRAMES 90          // 1.5s between waves
+#macro ENEMY_SPAWN_DELAY_FRAMES 25   // ~0.4s between enemies
 
 // Game states
 #macro STATE_PLAYING 0

@@ -4,12 +4,22 @@ function spawn_wave() {
     enemies_in_wave = array_length(composition);
 
     var slot = SPAWN_ARC_SPAN / enemies_in_wave;
+    oGame.spawn_queue = [];
+    
     for (var i = 0; i < enemies_in_wave; i++) {
         var angle = SPAWN_ARC_START + slot * i + random(slot);
         var sx = ARENA_CENTER_X + lengthdir_x(ARENA_RADIUS + 20, angle);
         var sy = ARENA_CENTER_Y + lengthdir_y(ARENA_RADIUS + 20, angle);
-        instance_create_layer(sx, sy, "Instances", get_enemy_object(composition[i]));
+        
+        var enemy_data = {
+            type: composition[i],
+            x: sx,
+            y: sy
+        };
+        array_push(oGame.spawn_queue, enemy_data);
     }
+    
+    oGame.spawn_timer = 0;
 }
 
 function get_wave_composition() {
