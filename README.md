@@ -4,126 +4,84 @@ A fast-paced arcade action game where a lone knight defends against waves of ene
 
 ## Game Overview
 
-**Roundabout Hero** is a skill-based arcade game inspired by classics like *Subway Surfers* and *Enter the Gungeon*. You play as a knight perpetually walking in a circle, facing incoming enemies with only two options: **Attack** or **Defend**. Each enemy type has unique mechanics, forcing you to learn patterns and react strategically.
+**Roundabout Hero** is a skill-based arcade game inspired by classics like *Enter the Gungeon* and *Shovel Knight*. You play as a knight standing at the bottom of a circular arena, facing enemies that spawn at the top and ride the circle down toward you — with only two inputs: **Attack** or **Defend**. Each enemy type has unique mechanics, forcing you to learn patterns and react strategically.
 
-As time passes, enemies spawn faster and faster until you fall—a pure test of skill and pattern recognition.
+As time passes, waves grow larger and faster until you fall — a pure test of skill and pattern recognition.
 
 ## Gameplay Mechanics
 
 ### Controls
-- **Attack Button** – Strike the enemy in front of you
-- **Defend Button** – Block incoming damage
-
-### Enemy Types
-
-**Bandit (Red)**
-- Attacks head-on
-- Simply attack to defeat it
-- Attacking a Bandit is always the right choice
-
-**Shielded Bandit (Blue)**
-- Protected by a shield
-- Defend first to riposte, then attack to defeat it
-
-**Assassin (Purple)**
-- Moves unpredictably
-- When you attack, it backsteps away
-- You must attack twice to defeat it—once to trigger the backstep, once to finish it
-
-### Difficulty Progression
-
-The game follows a **progressive difficulty curve**:
-- **0:00–1:00** – Mostly Bandits with occasional Shielded Bandits (learning phase)
-- **1:00–2:00** – More variety; Assassins begin appearing
-- **2:00+** – Enemies spawn rapidly in mixed waves until you fall
-
-Your score is determined by **survival time**. The longer you survive, the higher your score.
-
-## Visual Style
-
-Roundabout Hero uses **pixel art** inspired by:
-- **Shovel Knight** – Clean silhouettes and readable character design
-- **Enter the Gungeon** – Color-coded enemies and intense visual feedback
-- **Loop Hero** – Minimalist aesthetic with elegant design
-
-The game prioritizes **clarity at speed**—enemy colors, patterns, and animations are designed to be instantly recognizable even as the game accelerates.
-
-## Technical Stack
-
-- **Engine:** GameMaker Studio 2 (Latest)
-- **Language:** GML (GameMaker Language)
-- **Art:** AI-generated pixel art assets
-- **Target Platform:** Windows 
-
-## Project Structure
-
-```
-roundabout-hero/
-├── sprites/             # Pixel art assets (knight, enemies, UI)
-├── objects/             # GameMaker objects (oKnight, oEnemy, etc.)
-├── rooms/               # Game room definitions
-├── scripts/             # GML scripts and game logic
-├── configs/             # Game constants and settings
-└── README.md           # This file
-```
-
-## Getting Started
-
-### Prerequisites
-- GameMaker Studio 2 (Latest version recommended)
-- Basic understanding of GameMaker workflow (optional but helpful)
-
-
-### Game Controls
 
 | Action | Control |
 |--------|---------|
 | Attack | **Z** / Left Mouse Click |
 | Defend | **X** / Right Mouse Click |
+| Pause | **ESC** / **P** |
 | Restart | **R** (after game over) |
 
-Controls can be customized in `configs/input_config.gml`
+### Enemy Types
+
+**Bandit (Red)**
+- Charges straight toward you along the circle
+- One Attack in range defeats it
+
+**Shielded Bandit (Blue)**
+- Protected by a shield — attacking it wastes your time (miss penalty)
+- Defend first to riposte (drops the shield), then Attack to finish it
+
+**Assassin (Purple)**
+- Your first Attack triggers a dramatic backstep — it leaps away along the circle, briefly freezing in place
+- Land a second Attack during the freeze window to finish it; miss it and it resumes its advance
+
+### Difficulty Progression
+
+- **0:00 – 0:30** – 2-5 enemies per wave; Bandits and the occasional Shielded Bandit (learning phase, no Assassins)
+- **0:30+** – 3-7 enemies per wave; Assassins enter the mix (~1 in 5 enemies); wave size continues to grow over time
+
+Enemy speed increases with survival time. Your score is your **survival time** — the longer you last, the higher your score.
+
+## Visual Feedback
+
+- **Screen shake** on every hit taken
+- **Particle burst** at the point of impact
+- **Yellow ring** around the knight shows the active attack range
+- **Wave counter** and **timer** always visible
+
+## Technical Stack
+
+- **Engine:** GameMaker Studio 2 (GMS2 2026)
+- **Language:** GML (GameMaker Language)
+- **Target Platform:** Windows
 
 ## Development Progress
 
-- [x] Core game loop (knight movement, enemy spawning)
-- [x] Three enemy types with unique mechanics
-- [x] Difficulty scaling system
-- [x] Collision detection and combat feedback
-- [ ] Score tracking and game over state
-- [ ] Audio effects and background music
-- [ ] Visual polish (animations, particle effects)
-- [ ] Leaderboard / high score system
-- [ ] Mobile controls support
-- [x] Pause menu
+- [x] Core game loop (fixed-position knight, circular enemy movement, wave spawning)
+- [x] Three enemy types with unique mechanics (Bandit, Shielded Bandit, Assassin)
+- [x] Upper-half spawn system — enemies always spawn at the top and travel down
+- [x] Randomized wave sizing with time-based scaling
+- [x] Difficulty scaling (speed multiplier over time)
+- [x] Score tracking and game over overlay
+- [x] Pause / resume (ESC or P)
+- [x] Screen shake and particle effects on damage
+- [ ] Pixel art sprites and animations (currently colored squares)
+- [ ] Sound effects and music
+- [ ] Persistent high score / leaderboard
+- [ ] Mobile controls
 
 ## Design Philosophy
 
-Roundabout Hero prioritizes:
-
-1. **Accessibility through clarity** – Simple mechanics, readable visuals, instant feedback
-2. **Skill-based progression** – No RNG, no hidden mechanics; only player skill determines success
-3. **Arcade purity** – Short play sessions, high replayability, one-hit-death tension
-4. **Pattern recognition** – Each enemy type teaches a unique decision pattern
-5. **Visual coherence** – Consistent pixel art style with color-coded enemy types
+1. **Two inputs, infinite depth** – Attack and Defend are the only controls; mastery comes from reading enemy types and timing, not complex inputs
+2. **Skill-based progression** – No hidden mechanics; only pattern recognition and reaction speed determine how long you survive
+3. **Arcade purity** – Short sessions, high replayability, score chasing
+4. **Clarity at speed** – Color-coded enemies and instant visual feedback so decisions stay readable even as waves get dense
 
 ## Credits
 
 **Developed by:** Kevin  
 **Game Concept & Design:** Kevin  
-**Art Assets:** AI-generated pixel art (Midjourney / Leonardo.AI)  
-**Inspiration:** *Subway Surfers, Enter the Gungeon, Shovel Knight, Loop Hero*
-
-
-
-## Feedback & Contributing
-
-This is a portfolio project developed for educational purposes. Feedback and suggestions are welcome! Feel free to:
-- Report bugs or edge cases
-- Suggest game balance improvements
-- Share gameplay videos or high scores
+**Inspiration:** *Enter the Gungeon, Shovel Knight, Loop Hero*
 
 ---
 
-**Status:** In active development  
+**Status:** In active development — v0.25  
 **Last Updated:** June 2026
