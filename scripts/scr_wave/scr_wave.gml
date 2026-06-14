@@ -3,8 +3,9 @@ function spawn_wave() {
     var composition = get_wave_composition();
     enemies_in_wave = array_length(composition);
 
+    var slot = SPAWN_ARC_SPAN / enemies_in_wave;
     for (var i = 0; i < enemies_in_wave; i++) {
-        var angle = (360 / enemies_in_wave) * i + 45;
+        var angle = SPAWN_ARC_START + slot * i + random(slot);
         var sx = ARENA_CENTER_X + lengthdir_x(ARENA_RADIUS + 20, angle);
         var sy = ARENA_CENTER_Y + lengthdir_y(ARENA_RADIUS + 20, angle);
         instance_create_layer(sx, sy, "Instances", get_enemy_object(composition[i]));
@@ -12,41 +13,30 @@ function spawn_wave() {
 }
 
 function get_wave_composition() {
-    var t = floor(survival_timer / 60);
+    var t = floor(survival_timer / 60);   // seconds survived
     var result = [];
     var size;
 
-    if (t < 60) {
-        size = irandom_range(2, 3);
+    if (t < 30) {
+        size = irandom_range(WAVE_SIZE_EARLY_MIN, WAVE_SIZE_EARLY_MAX);
         for (var i = 0; i < size; i++) {
             if (irandom(4) == 0) {
-                result[i] = ENEMY_SHIELDED;
-            } else {
-                result[i] = ENEMY_BANDIT;
-            }
-        }
-    } else if (t < 120) {
-        size = irandom_range(3, 4);
-        for (var i = 0; i < size; i++) {
-            var roll = irandom(5);
-            if (roll == 0) {
-                result[i] = ENEMY_SHIELDED;
-            } else if (roll == 1) {
-                result[i] = ENEMY_ASSASSIN;
+                result[i] = ENEMY_SHIELDED;   // ~20%
             } else {
                 result[i] = ENEMY_BANDIT;
             }
         }
     } else {
-        size = irandom_range(4, min(6, 3 + floor((t - 120) / 30)));
+        var grown_max = min(WAVE_SIZE_CAP, WAVE_SIZE_LATE_MAX + floor((t - 30) / 60));
+        size = irandom_range(WAVE_SIZE_LATE_MIN, grown_max);
         for (var i = 0; i < size; i++) {
-            var roll = irandom(4);
+            var roll = irandom(4);            // 5 outcomes, 20% each
             if (roll == 0) {
-                result[i] = ENEMY_SHIELDED;
+                result[i] = ENEMY_SHIELDED;   // ~20%
             } else if (roll == 1) {
-                result[i] = ENEMY_ASSASSIN;
+                result[i] = ENEMY_ASSASSIN;   // ~20%, now from 30s
             } else {
-                result[i] = ENEMY_BANDIT;
+                result[i] = ENEMY_BANDIT;     // ~60%
             }
         }
     }

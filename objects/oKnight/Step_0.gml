@@ -25,7 +25,7 @@ if ((keyboard_check_pressed(ord("Z")) || mouse_check_button_pressed(mb_left))
             case ENEMY_ASSASSIN:
                 if (!active.backstep_state) {
                     active.backstep_state = true;
-                    active.backstep_timer = 45;
+                    active.backstep_timer = ASSASSIN_BACKSTEP_FREEZE;
                     // Push back along the circle away from the player
                     var player_ang = point_direction(ARENA_CENTER_X, ARENA_CENTER_Y, x, y);
                     var adiff = angle_difference(player_ang, active.circle_angle);
