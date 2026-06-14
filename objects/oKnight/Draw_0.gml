@@ -1,7 +1,8 @@
-// Player square
-draw_set_color(c_white);
-draw_rectangle(x - PLAYER_SIZE/2, y - PLAYER_SIZE/2,
-               x + PLAYER_SIZE/2, y + PLAYER_SIZE/2, false);
+// Player sprite — side profile, bottom-center origin lands feet on the rim.
+// facing (+/-1) mirrors the art; sprite_index/image_index are set in Step.
+draw_sprite_ext(sprite_index, image_index, x, y,
+                facing * KNIGHT_DRAW_SCALE, KNIGHT_DRAW_SCALE,
+                0, c_white, 1);
 
 // HP hearts — top left
 for (var i = 0; i < PLAYER_MAX_HP; i++) {

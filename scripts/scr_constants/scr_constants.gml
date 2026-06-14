@@ -8,12 +8,17 @@
 // Player — sits at the front rim of the ellipse (parametric angle 270)
 // PLAYER_START_X must equal ARENA_CENTER_X so the player maps cleanly to 270 degrees
 #macro PLAYER_START_X 683
-#macro PLAYER_START_Y 463            // ARENA_CENTER_Y + ARENA_RADIUS_Y - 37 (37px gap < ENEMY_CONTACT_DIST)
+#macro PLAYER_START_Y 500            // ARENA_CENTER_Y + ARENA_RADIUS_Y — anchor sits ON the front rim line (feet grounded; bottom-center sprite lands here)
 #macro PLAYER_MAX_HP 3
 #macro PLAYER_SIZE 34                // visual size (kept modest; arena is large but big squares looked chunky)
 
+// Knight sprite poses (visual only)
+#macro KNIGHT_ATTACK_POSE_FRAMES 40  // how long the attack pose shows after a swing — matches ~9 frames at 3x speed
+#macro KNIGHT_DEFEND_POSE_FRAMES 40  // how long the defend pose shows after a block — matches ~9 frames at 3x speed
+#macro KNIGHT_DRAW_SCALE 3          // visual scale of the 60x60 knight art (tune to taste)
+
 // Combat
-#macro ATTACK_RANGE 184              // scaled ~2.3x with ARENA_RADIUS_X to keep the same angular hit window
+#macro ATTACK_RANGE 130              // tightened from 184 — the wide flat ellipse made the ring feel huge (smaller = closer hits, tighter reaction)
 #macro ATTACK_COOLDOWN_FRAMES 90     // 1.5s miss penalty at 60fps
 #macro DEFEND_COOLDOWN_FRAMES 300    // 5s failsafe penalty at 60fps
 #macro ASSASSIN_BACKSTEP_DIST 180    // ~177px chord, clearly leaves attack range
@@ -22,7 +27,7 @@
 // Enemies
 #macro ENEMY_SIZE 28                 // visual size (smaller than contact dist, purely cosmetic)
 #macro BASE_ENEMY_SPEED 1.8
-#macro ENEMY_CONTACT_DIST 46         // scaled ~2.3x; front-rim contact gap (37px) stays inside this
+#macro ENEMY_CONTACT_DIST 46         // enemy hits the player within this distance of the front rim
 
 // Spawn arc — upper half of the circle (90 = top, 270 = bottom/player)
 #macro SPAWN_ARC_START 20            // degrees; lower edge of upper-half arc
