@@ -1,6 +1,7 @@
-// Arena circle
+// Arena ellipse (perspective platform)
 draw_set_color(c_dkgray);
-draw_circle(ARENA_CENTER_X, ARENA_CENTER_Y, ARENA_RADIUS, true);
+draw_ellipse(ARENA_CENTER_X - ARENA_RADIUS_X, ARENA_CENTER_Y - ARENA_RADIUS_Y,
+             ARENA_CENTER_X + ARENA_RADIUS_X, ARENA_CENTER_Y + ARENA_RADIUS_Y, true);
 
 // Attack range ring around player
 if (instance_exists(oKnight)) {

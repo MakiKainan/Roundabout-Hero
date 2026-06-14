@@ -10,6 +10,9 @@ wave_number = 0;
 wave_pause_timer = 0;
 enemies_in_wave = 0;
 
+spawn_queue = [];
+spawn_timer = 0;
+
 shake_frames = 0;
 shake_magnitude = 0;
 

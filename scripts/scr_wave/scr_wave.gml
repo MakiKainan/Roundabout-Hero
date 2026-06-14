@@ -1,15 +1,30 @@
+// Angle -> position on the arena ellipse. Single source of truth for the
+// projection (lengthdir_x uses only cos, lengthdir_y only sin, so feeding
+// different radii traces a true ellipse). Visual/perspective tweaks live here.
+function arena_x(angle) { return ARENA_CENTER_X + lengthdir_x(ARENA_RADIUS_X, angle); }
+function arena_y(angle) { return ARENA_CENTER_Y + lengthdir_y(ARENA_RADIUS_Y, angle); }
+
 function spawn_wave() {
     wave_number++;
     var composition = get_wave_composition();
     enemies_in_wave = array_length(composition);
 
     var slot = SPAWN_ARC_SPAN / enemies_in_wave;
+    oGame.spawn_queue = [];
+
     for (var i = 0; i < enemies_in_wave; i++) {
         var angle = SPAWN_ARC_START + slot * i + random(slot);
-        var sx = ARENA_CENTER_X + lengthdir_x(ARENA_RADIUS + 20, angle);
-        var sy = ARENA_CENTER_Y + lengthdir_y(ARENA_RADIUS + 20, angle);
-        instance_create_layer(sx, sy, "Instances", get_enemy_object(composition[i]));
+
+        var enemy_data = {
+            type: composition[i],
+            angle: angle,
+            x: arena_x(angle),
+            y: arena_y(angle)
+        };
+        array_push(oGame.spawn_queue, enemy_data);
     }
+
+    oGame.spawn_timer = 0;
 }
 
 function get_wave_composition() {

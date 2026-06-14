@@ -31,8 +31,8 @@ if ((keyboard_check_pressed(ord("Z")) || mouse_check_button_pressed(mb_left))
                     var adiff = angle_difference(player_ang, active.circle_angle);
                     var backstep_deg = ASSASSIN_BACKSTEP_DIST * (180 / pi) / ARENA_RADIUS;
                     active.circle_angle -= sign(adiff) * backstep_deg;
-                    active.x = ARENA_CENTER_X + lengthdir_x(ARENA_RADIUS, active.circle_angle);
-                    active.y = ARENA_CENTER_Y + lengthdir_y(ARENA_RADIUS, active.circle_angle);
+                    active.x = arena_x(active.circle_angle);
+                    active.y = arena_y(active.circle_angle);
                 } else {
                     instance_destroy(active);
                 }
