@@ -34,6 +34,5 @@
   "solid":false,
   "spriteId":null,
   "spriteMaskId":null,
-  "tags":[],
   "visible":true,
 }
