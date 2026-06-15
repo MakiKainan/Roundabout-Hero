@@ -78,8 +78,8 @@ Enemy speed increases with survival time. Your score is your **survival time** â
 
 ## Credits
 
-**Developed by:** Kevin  
-**Game Concept & Design:** Kevin  
+**Developed by:** Kevin Sukias K & Gerald Adli
+**Game Concept & Design:** Kevin Sukias K & Gerald Adli
 **Inspiration:** *Enter the Gungeon, Shovel Knight, Loop Hero*
 
 ---
