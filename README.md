@@ -63,7 +63,8 @@ Enemy speed increases with survival time. Your score is your **survival time** â
 - [x] Score tracking and game over overlay
 - [x] Pause / resume (ESC or P)
 - [x] Screen shake and particle effects on damage
-- [ ] Pixel art sprites and animations (currently colored squares)
+- [x] Knight pixel art sprites â€” animated idle / attack / defend with directional facing
+- [ ] Enemy pixel art sprites (currently colored squares)
 - [ ] Sound effects and music
 - [ ] Persistent high score / leaderboard
 - [ ] Mobile controls
@@ -83,5 +84,5 @@ Enemy speed increases with survival time. Your score is your **survival time** â
 
 ---
 
-**Status:** In active development â€” v0.25  
+**Status:** In active development â€” v0.31  
 **Last Updated:** June 2026
