@@ -34,8 +34,10 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"spr_bandit_attack",
+    "path":"sprites/spr_bandit_attack/spr_bandit_attack.yy",
+  },
   "spriteMaskId":null,
-  "tags":[],
   "visible":true,
 }

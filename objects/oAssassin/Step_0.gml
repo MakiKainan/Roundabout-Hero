@@ -1,5 +1,7 @@
 if (oGame.game_state != STATE_PLAYING) exit;
 
+depth = -y;
+
 if (backstep_timer > 0) {
     backstep_timer--;
     exit;
