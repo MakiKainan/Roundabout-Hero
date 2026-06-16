@@ -1,5 +1,7 @@
 if (oGame.game_state != STATE_PLAYING) exit;
 
+depth = -y;
+
 if (attack_cooldown > 0) attack_cooldown--;
 if (defend_cooldown > 0) defend_cooldown--;
 
@@ -26,6 +28,9 @@ if ((keyboard_check_pressed(ord("Z")) || mouse_check_button_pressed(mb_left))
     && attack_cooldown == 0) {
 
     attack_pose_timer = KNIGHT_ATTACK_POSE_FRAMES;
+    sprite_index = spr_knight_attack;
+    image_index = 0;
+    
     var active = instance_nearest(x, y, par_enemy);
 
     if (active != noone && point_distance(x, y, active.x, active.y) <= ATTACK_RANGE) {
@@ -68,6 +73,9 @@ if ((keyboard_check_pressed(ord("X")) || mouse_check_button_pressed(mb_right))
     && defend_cooldown == 0) {
 
     defend_pose_timer = KNIGHT_DEFEND_POSE_FRAMES;
+    sprite_index = spr_knight_defend;
+    image_index = 0;
+    
     var active = instance_nearest(x, y, par_enemy);
 
     if (active != noone

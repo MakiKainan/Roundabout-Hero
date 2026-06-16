@@ -1,5 +1,7 @@
 if (oGame.game_state != STATE_PLAYING) exit;
 
+depth = -y;
+
 var player_angle = point_direction(ARENA_CENTER_X, ARENA_CENTER_Y, oKnight.x, oKnight.y);
 var diff = angle_difference(player_angle, circle_angle);
 var angular_spd = spd * (180 / pi) / ARENA_RADIUS;

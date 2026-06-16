@@ -29,5 +29,20 @@ part_type_speed(global.part_hit, 2, 6, -0.1, 0);
 part_type_direction(global.part_hit, 0, 359, 0, 0);
 part_type_life(global.part_hit, 15, 30);
 
+// Fix floating sprites automatically by shifting their origin to the bottom-most visible pixel (their feet)
+function auto_align_sprite_origin(spr) {
+    if (sprite_exists(spr) && spr != -1) {
+        var x_cen = sprite_get_width(spr) / 2;
+        var y_bot = sprite_get_bbox_bottom(spr) + 1;
+        sprite_set_offset(spr, x_cen, y_bot);
+    }
+}
+
+auto_align_sprite_origin(spr_knight_idle);
+auto_align_sprite_origin(spr_knight_attack);
+auto_align_sprite_origin(spr_knight_defend);
+auto_align_sprite_origin(asset_get_index("spr_bandit_walk"));
+auto_align_sprite_origin(asset_get_index("spr_bandit_attack"));
+
 instance_create_layer(PLAYER_START_X, PLAYER_START_Y, "Instances", oKnight);
 spawn_wave();
