@@ -10,7 +10,7 @@ if (defend_cooldown > 0) defend_cooldown--;
 
 // --- Visual state: face nearest enemy, tick pose timers ---
 var near = instance_nearest(x, y, par_enemy);
-if (near != noone) {
+if (near != noone && abs(near.x - x) > 8) {
     facing = (near.x >= x) ? 1 : -1;
 }
 
@@ -19,13 +19,22 @@ if (defend_pose_timer > 0) defend_pose_timer--;
 
 // Choose the pose sprite (priority: attack > defend > idle). Reset frame on state change.
 if (attack_pose_timer > 0) {
-    if (sprite_index != spr_knight_attack) { sprite_index = spr_knight_attack; image_index = 0; }
+    if (sprite_index != spr_knight_attack) {
+        sprite_index = spr_knight_attack;
+        image_index = 0;
+    }
     image_speed = 3;
 } else if (defend_pose_timer > 0) {
-    if (sprite_index != spr_knight_defend) { sprite_index = spr_knight_defend; image_index = 0; }
+    if (sprite_index != spr_knight_defend) {
+        sprite_index = spr_knight_defend;
+        image_index = 0;
+    }
     image_speed = 3;
 } else {
-    if (sprite_index != spr_knight_idle)   { sprite_index = spr_knight_idle;   image_index = 0; }
+    if (sprite_index != spr_knight_idle) {
+        sprite_index = spr_knight_idle;
+        image_index = 0;
+    }
     image_speed = 1;
 }
 
@@ -34,9 +43,11 @@ if ((keyboard_check_pressed(ord("Z")) || mouse_check_button_pressed(mb_left))
     && attack_cooldown == 0) {
 
     attack_pose_timer = KNIGHT_ATTACK_POSE_FRAMES;
+    defend_pose_timer = 0;
     sprite_index = spr_knight_attack;
     image_index = 0;
-    
+    image_speed = 3;
+
     var active = instance_nearest(x, y, par_enemy);
 
     if (active != noone && point_distance(x, y, active.x, active.y) <= ATTACK_RANGE) {
@@ -79,9 +90,11 @@ if ((keyboard_check_pressed(ord("X")) || mouse_check_button_pressed(mb_right))
     && defend_cooldown == 0) {
 
     defend_pose_timer = KNIGHT_DEFEND_POSE_FRAMES;
+    attack_pose_timer = 0;
     sprite_index = spr_knight_defend;
     image_index = 0;
-    
+    image_speed = 3;
+
     var active = instance_nearest(x, y, par_enemy);
 
     if (active != noone

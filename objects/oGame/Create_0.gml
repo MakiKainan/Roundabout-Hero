@@ -29,18 +29,10 @@ part_type_speed(global.part_hit, 2, 6, -0.1, 0);
 part_type_direction(global.part_hit, 0, 359, 0, 0);
 part_type_life(global.part_hit, 15, 30);
 
-// Load Parallax Backgrounds (Battleground 2)
-global.bg_layers = [];
-global.bg_speeds = [0.2, 0.4, 0.7, 1.0, 1.5, 2.0, 3.0]; // Different speeds for 3D depth
+// Parallax background layers (imported sprite resources, back -> front)
+global.bg_layers  = [spr_bg_0, spr_bg_1, spr_bg_2, spr_bg_3, spr_bg_4, spr_bg_5, spr_bg_6];
+global.bg_speeds  = [0.2, 0.4, 0.7, 1.0, 1.5, 2.0, 3.0];
 global.bg_offsets = [0, 0, 0, 0, 0, 0, 0];
-
-var bg_path = "d:/GameMakerProject/Roundabout-Hero-main/background/PNG/Battleground2/Bright/";
-var bg_files = ["bg.png", "mountaims.png", "dragon.png", "wall@windows.png", "columns&falgs.png", "candeliar.png", "floor.png"];
-
-for (var i = 0; i < array_length(bg_files); i++) {
-    var spr = sprite_add(bg_path + bg_files[i], 1, false, false, 0, 0);
-    array_push(global.bg_layers, spr);
-}
 
 // Fix floating sprites automatically by shifting their origin to the bottom-most visible pixel (their feet)
 function auto_align_sprite_origin(spr) {
@@ -64,6 +56,20 @@ auto_align_sprite_origin(b_walk);
 if (sprite_exists(b_walk) && sprite_exists(b_attack)) {
     // Force the attack sprite to share the exact same origin as the walk sprite
     sprite_set_offset(b_attack, sprite_get_xoffset(b_walk), sprite_get_yoffset(b_walk));
+}
+
+// Shielded bandit: ground the walk sprite on its feet, then share that origin across states
+var s_walk = asset_get_index("spr_shielded_walk");
+var s_vuln = asset_get_index("spr_shielded_vulnerable");
+var s_attack = asset_get_index("spr_shielded_attack");
+auto_align_sprite_origin(s_walk);
+if (sprite_exists(s_walk)) {
+    if (sprite_exists(s_vuln)) {
+        sprite_set_offset(s_vuln, sprite_get_xoffset(s_walk), sprite_get_yoffset(s_walk));
+    }
+    if (sprite_exists(s_attack)) {
+        sprite_set_offset(s_attack, sprite_get_xoffset(s_walk), sprite_get_yoffset(s_walk));
+    }
 }
 
 instance_create_layer(PLAYER_START_X, PLAYER_START_Y, "Instances", oKnight);

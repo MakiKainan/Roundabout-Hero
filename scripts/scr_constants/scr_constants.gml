@@ -17,6 +17,7 @@
 #macro KNIGHT_DEFEND_POSE_FRAMES 40  // how long the defend pose shows after a block — matches ~9 frames at 3x speed
 #macro KNIGHT_DRAW_SCALE 3          // visual scale of the 60x60 knight art (tune to taste)
 #macro BANDIT_DRAW_SCALE 2.0        // visual scale of the bandit art (smaller than knight)
+#macro SHIELDED_DRAW_SCALE 2.0      // visual scale of the shielded-bandit art (matches bandit; both 92x92)
 
 // Combat
 #macro ATTACK_RANGE 130              // tightened from 184 — the wide flat ellipse made the ring feel huge (smaller = closer hits, tighter reaction)
@@ -42,7 +43,7 @@
 #macro WAVE_SIZE_CAP       12         // hard ceiling for the scaled max
 
 // Wave
-#macro WAVE_PAUSE_FRAMES 90          // 1.5s between waves
+#macro WAVE_PAUSE_FRAMES 0          // 1.5s between waves
 #macro ENEMY_SPAWN_DELAY_FRAMES 25   // ~0.4s between enemies
 
 // Game states
