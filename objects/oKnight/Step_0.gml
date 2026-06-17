@@ -1,4 +1,7 @@
-if (oGame.game_state != STATE_PLAYING) exit;
+if (oGame.game_state != STATE_PLAYING) {
+    image_speed = 0;
+    exit;
+}
 
 depth = -y;
 
@@ -16,11 +19,14 @@ if (defend_pose_timer > 0) defend_pose_timer--;
 
 // Choose the pose sprite (priority: attack > defend > idle). Reset frame on state change.
 if (attack_pose_timer > 0) {
-    if (sprite_index != spr_knight_attack) { sprite_index = spr_knight_attack; image_index = 0; image_speed = 3; }
+    if (sprite_index != spr_knight_attack) { sprite_index = spr_knight_attack; image_index = 0; }
+    image_speed = 3;
 } else if (defend_pose_timer > 0) {
-    if (sprite_index != spr_knight_defend) { sprite_index = spr_knight_defend; image_index = 0; image_speed = 3; }
+    if (sprite_index != spr_knight_defend) { sprite_index = spr_knight_defend; image_index = 0; }
+    image_speed = 3;
 } else {
-    if (sprite_index != spr_knight_idle)   { sprite_index = spr_knight_idle;   image_index = 0; image_speed = 1; }
+    if (sprite_index != spr_knight_idle)   { sprite_index = spr_knight_idle;   image_index = 0; }
+    image_speed = 1;
 }
 
 // Attack — Z or left mouse

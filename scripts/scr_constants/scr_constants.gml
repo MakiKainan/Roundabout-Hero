@@ -16,10 +16,11 @@
 #macro KNIGHT_ATTACK_POSE_FRAMES 40  // how long the attack pose shows after a swing — matches ~9 frames at 3x speed
 #macro KNIGHT_DEFEND_POSE_FRAMES 40  // how long the defend pose shows after a block — matches ~9 frames at 3x speed
 #macro KNIGHT_DRAW_SCALE 3          // visual scale of the 60x60 knight art (tune to taste)
+#macro BANDIT_DRAW_SCALE 2.0        // visual scale of the bandit art (smaller than knight)
 
 // Combat
 #macro ATTACK_RANGE 130              // tightened from 184 — the wide flat ellipse made the ring feel huge (smaller = closer hits, tighter reaction)
-#macro ATTACK_COOLDOWN_FRAMES 90     // 1.5s miss penalty at 60fps
+#macro ATTACK_COOLDOWN_FRAMES 180    // 3s miss penalty at 60fps
 #macro DEFEND_COOLDOWN_FRAMES 300    // 5s failsafe penalty at 60fps
 #macro ASSASSIN_BACKSTEP_DIST 180    // ~177px chord, clearly leaves attack range
 #macro ASSASSIN_BACKSTEP_FREEZE 75   // frames frozen after backstep (~1.25s)
