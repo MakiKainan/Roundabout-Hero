@@ -39,10 +39,19 @@ function auto_align_sprite_origin(spr) {
 }
 
 auto_align_sprite_origin(spr_knight_idle);
-auto_align_sprite_origin(spr_knight_attack);
-auto_align_sprite_origin(spr_knight_defend);
-auto_align_sprite_origin(asset_get_index("spr_bandit_walk"));
-auto_align_sprite_origin(asset_get_index("spr_bandit_attack"));
+// Force attack/defend sprites to share the EXACT same origin as the idle sprite
+// This prevents them from jerking up/down if the sword swings lower than their feet!
+sprite_set_offset(spr_knight_attack, sprite_get_xoffset(spr_knight_idle), sprite_get_yoffset(spr_knight_idle));
+sprite_set_offset(spr_knight_defend, sprite_get_xoffset(spr_knight_idle), sprite_get_yoffset(spr_knight_idle));
+
+var b_walk = asset_get_index("spr_bandit_walk");
+var b_attack = asset_get_index("spr_bandit_attack");
+
+auto_align_sprite_origin(b_walk);
+if (sprite_exists(b_walk) && sprite_exists(b_attack)) {
+    // Force the attack sprite to share the exact same origin as the walk sprite
+    sprite_set_offset(b_attack, sprite_get_xoffset(b_walk), sprite_get_yoffset(b_walk));
+}
 
 instance_create_layer(PLAYER_START_X, PLAYER_START_Y, "Instances", oKnight);
 spawn_wave();
