@@ -6,8 +6,8 @@ if (state == "moving") {
     var spr = asset_get_index("spr_bandit_walk");
     if (sprite_exists(spr) && sprite_index != spr) {
         sprite_index = spr;
-        image_speed = 1;
     }
+    image_speed = 2; // Increased to fix choppy/delayed visual movement
 
     var player_angle = point_direction(ARENA_CENTER_X, ARENA_CENTER_Y, oKnight.x, oKnight.y);
     var diff = angle_difference(player_angle, circle_angle);

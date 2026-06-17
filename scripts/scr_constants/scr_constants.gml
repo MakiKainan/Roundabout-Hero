@@ -19,8 +19,8 @@
 
 // Combat
 #macro ATTACK_RANGE 130              // tightened from 184 — the wide flat ellipse made the ring feel huge (smaller = closer hits, tighter reaction)
-#macro ATTACK_COOLDOWN_FRAMES 90     // 1.5s miss penalty at 60fps
-#macro DEFEND_COOLDOWN_FRAMES 300    // 5s failsafe penalty at 60fps
+#macro ATTACK_COOLDOWN_FRAMES 20     // Reduced from 90 to make missing feel less laggy
+#macro DEFEND_COOLDOWN_FRAMES 40     // Reduced from 300 so defensive misclicks don't lock you out forever
 #macro ASSASSIN_BACKSTEP_DIST 180    // ~177px chord, clearly leaves attack range
 #macro ASSASSIN_BACKSTEP_FREEZE 75   // frames frozen after backstep (~1.25s)
 
