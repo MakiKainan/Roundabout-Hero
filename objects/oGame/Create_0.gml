@@ -15,6 +15,7 @@ spawn_timer = 0;
 
 shake_frames = 0;
 shake_magnitude = 0;
+hit_stop_frames = 0;
 
 // Particle System
 global.part_sys = part_system_create();

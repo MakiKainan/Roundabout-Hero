@@ -42,7 +42,7 @@
 #macro WAVE_SIZE_CAP       12         // hard ceiling for the scaled max
 
 // Wave
-#macro WAVE_PAUSE_FRAMES 90          // 1.5s between waves
+#macro WAVE_PAUSE_FRAMES 0         // 1.5s between waves
 #macro ENEMY_SPAWN_DELAY_FRAMES 25   // ~0.4s between enemies
 
 // Game states

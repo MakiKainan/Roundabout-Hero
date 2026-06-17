@@ -27,6 +27,10 @@ if (game_state == STATE_GAME_OVER && keyboard_check_pressed(ord("R"))) {
 
 if (game_state == STATE_PLAYING) {
 
+    if (hit_stop_frames > 0) {
+        hit_stop_frames--;
+        exit;
+    }
 
     survival_timer++;
     score = floor(survival_timer / 60);

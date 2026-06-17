@@ -28,6 +28,8 @@
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
     {"id":{"name":"scr_constants","path":"scripts/scr_constants/scr_constants.yy",},},
     {"id":{"name":"scr_wave","path":"scripts/scr_wave/scr_wave.yy",},},
+    {"id":{"name":"snd_hit","path":"sounds/snd_hit/snd_hit.yy",},},
+    {"id":{"name":"snd_swing","path":"sounds/snd_swing/snd_swing.yy",},},
     {"id":{"name":"spr_bandit_attack","path":"sprites/spr_bandit_attack/spr_bandit_attack.yy",},},
     {"id":{"name":"spr_bandit_walk","path":"sprites/spr_bandit_walk/spr_bandit_walk.yy",},},
     {"id":{"name":"spr_knight_attack","path":"sprites/spr_knight_attack/spr_knight_attack.yy",},},

@@ -3,6 +3,11 @@ if (oGame.game_state != STATE_PLAYING) {
     exit;
 }
 
+if (oGame.hit_stop_frames > 0) {
+    image_index -= image_speed;
+    exit;
+}
+
 depth = -y;
 
 if (state == "moving") {
@@ -33,6 +38,8 @@ if (state == "moving") {
         oKnight.hp--;
         oGame.shake_frames = 15;
         oGame.shake_magnitude = 8;
+        oGame.hit_stop_frames = 6;
+        audio_play_sound(snd_hit, 1, false);
         part_particles_create(global.part_sys, oKnight.x, oKnight.y, global.part_hit, 15);
         if (oKnight.hp <= 0) {
             oGame.game_state = STATE_GAME_OVER;
