@@ -3,6 +3,11 @@ if (oGame.game_state != STATE_PLAYING) {
     exit;
 }
 
+if (oGame.hit_stop_frames > 0) {
+    image_index -= image_speed;
+    exit;
+}
+
 depth = -y;
 
 if (attack_cooldown > 0) attack_cooldown--;
@@ -46,6 +51,8 @@ if ((keyboard_check_pressed(ord("Z")) || mouse_check_button_pressed(mb_left))
     defend_pose_timer = 0;
     sprite_index = spr_knight_attack;
     image_index = 0;
+    audio_play_sound(snd_swing, 1, false);
+    
     image_speed = 3;
 
     var active = instance_nearest(x, y, par_enemy);
@@ -53,10 +60,20 @@ if ((keyboard_check_pressed(ord("Z")) || mouse_check_button_pressed(mb_left))
     if (active != noone && point_distance(x, y, active.x, active.y) <= ATTACK_RANGE) {
         switch (active.enemy_type) {
             case ENEMY_BANDIT:
+                oGame.shake_frames = 10;
+                oGame.shake_magnitude = 5;
+                oGame.hit_stop_frames = 4;
+                audio_play_sound(snd_hit, 1, false);
+                part_particles_create(global.part_sys, active.x, active.y, global.part_hit, 20);
                 instance_destroy(active);
                 break;
             case ENEMY_SHIELDED:
                 if (active.is_vulnerable) {
+                    oGame.shake_frames = 10;
+                    oGame.shake_magnitude = 5;
+                    oGame.hit_stop_frames = 4;
+                    audio_play_sound(snd_hit, 1, false);
+                    part_particles_create(global.part_sys, active.x, active.y, global.part_hit, 20);
                     instance_destroy(active);
                 } else {
                     // Shield absorbs — miss penalty
@@ -75,6 +92,11 @@ if ((keyboard_check_pressed(ord("Z")) || mouse_check_button_pressed(mb_left))
                     active.x = arena_x(active.circle_angle);
                     active.y = arena_y(active.circle_angle);
                 } else {
+                    oGame.shake_frames = 10;
+                    oGame.shake_magnitude = 5;
+                    oGame.hit_stop_frames = 4;
+                    audio_play_sound(snd_hit, 1, false);
+                    part_particles_create(global.part_sys, active.x, active.y, global.part_hit, 20);
                     instance_destroy(active);
                 }
                 break;
