@@ -1,3 +1,5 @@
+if (oGame.game_state == STATE_GAME_OVER) exit;
+
 if (backstep_state) {
     draw_set_color(make_color_rgb(200, 100, 200));
 } else {

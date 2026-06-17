@@ -1,3 +1,5 @@
+if (oGame.game_state == STATE_GAME_OVER) exit;
+
 if (is_vulnerable) {
     draw_set_color(c_aqua);
 } else {

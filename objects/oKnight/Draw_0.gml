@@ -1,3 +1,5 @@
+if (oGame.game_state == STATE_GAME_OVER) exit;
+
 // Player sprite — side profile, bottom-center origin lands feet on the rim.
 // facing (+/-1) mirrors the art; sprite_index/image_index are set in Step.
 draw_sprite_ext(sprite_index, image_index, x, y,
