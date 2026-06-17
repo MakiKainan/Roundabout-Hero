@@ -31,6 +31,13 @@ if (game_state == STATE_PLAYING) {
     survival_timer++;
     score = floor(survival_timer / 60);
 
+    // Parallax scrolling
+    if (variable_global_exists("bg_layers")) {
+        for (var i = 0; i < array_length(global.bg_layers); i++) {
+            global.bg_offsets[i] -= global.bg_speeds[i]; // Move left
+        }
+    }
+
     if (survival_timer == 3600) {
         difficulty_multiplier = 1.2;
     } else if (survival_timer == 7200) {
