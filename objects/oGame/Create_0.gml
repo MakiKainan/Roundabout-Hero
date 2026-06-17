@@ -29,6 +29,19 @@ part_type_speed(global.part_hit, 2, 6, -0.1, 0);
 part_type_direction(global.part_hit, 0, 359, 0, 0);
 part_type_life(global.part_hit, 15, 30);
 
+// Load Parallax Backgrounds (Battleground 2)
+global.bg_layers = [];
+global.bg_speeds = [0.2, 0.4, 0.7, 1.0, 1.5, 2.0, 3.0]; // Different speeds for 3D depth
+global.bg_offsets = [0, 0, 0, 0, 0, 0, 0];
+
+var bg_path = "d:/GameMakerProject/Roundabout-Hero-main/background/PNG/Battleground2/Bright/";
+var bg_files = ["bg.png", "mountaims.png", "dragon.png", "wall@windows.png", "columns&falgs.png", "candeliar.png", "floor.png"];
+
+for (var i = 0; i < array_length(bg_files); i++) {
+    var spr = sprite_add(bg_path + bg_files[i], 1, false, false, 0, 0);
+    array_push(global.bg_layers, spr);
+}
+
 // Fix floating sprites automatically by shifting their origin to the bottom-most visible pixel (their feet)
 function auto_align_sprite_origin(spr) {
     if (sprite_exists(spr) && spr != -1) {

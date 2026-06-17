@@ -1,7 +1,20 @@
+// Draw Parallax Backgrounds
+if (variable_global_exists("bg_layers")) {
+    for (var i = 0; i < array_length(global.bg_layers); i++) {
+        var spr = global.bg_layers[i];
+        if (sprite_exists(spr) && spr != -1) {
+            var sh = max(1, sprite_get_height(spr));
+            var scale = 768 / sh; // Scale to fit screen height
+            draw_sprite_tiled_ext(spr, 0, global.bg_offsets[i], 0, scale, scale, c_white, 1.0);
+        }
+    }
+}
+
 // Arena ellipse (perspective platform)
-draw_set_color(c_dkgray);
+// Draw only the outline so the background shows completely through the arena!
+draw_set_color(c_ltgray);
 draw_ellipse(ARENA_CENTER_X - ARENA_RADIUS_X, ARENA_CENTER_Y - ARENA_RADIUS_Y,
-             ARENA_CENTER_X + ARENA_RADIUS_X, ARENA_CENTER_Y + ARENA_RADIUS_Y, true);
+             ARENA_CENTER_X + ARENA_RADIUS_X, ARENA_CENTER_Y + ARENA_RADIUS_Y, true);  // Outline
 
 // Attack range ring around player
 if (instance_exists(oKnight)) {
