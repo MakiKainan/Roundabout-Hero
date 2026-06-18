@@ -32,10 +32,37 @@ if (state == "moving") {
 
     // Stop and attack when very close to the player!
     if (point_distance(x, y, oKnight.x, oKnight.y) <= ENEMY_CONTACT_DIST + 5) {
+        if (oKnight.perfect_parry_window > 0) {
+            // PERFECT PARRY
+            oGame.shake_frames = 20;
+            oGame.shake_magnitude = 12;
+            oGame.hit_stop_frames = 12;
+            oGame.combo_count++;
+            oGame.combo_timer = 180;
+            oGame.combat_score += 50; // Bonus for parry
+            audio_play_sound(snd_hit, 1, false);
+            part_particles_create(global.part_sys, x, y, global.part_hit, 30);
+            array_push(oGame.floating_texts, {x: x, y: y - 40, text: "PERFECT!", color: c_yellow, alpha: 1.5});
+            
+            part_particles_create(global.part_sys, x, y, global.part_explosion, 10);
+            
+            var _ax = x; var _ay = y; var _aid = id;
+            with (par_enemy) {
+                if (id != _aid && point_distance(x, y, _ax, _ay) < 150) {
+                    instance_destroy(); oGame.combo_count++; oGame.combat_score += 10;
+                }
+            }
+            
+            instance_destroy();
+            exit;
+        }
+
         state = "attacking";
         
         // Deal damage IMMEDIATELY on contact
         oKnight.hp--;
+        oGame.combo_count = 0;
+        oGame.combo_timer = 0;
         oGame.shake_frames = 15;
         oGame.shake_magnitude = 8;
         oGame.hit_stop_frames = 6;

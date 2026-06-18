@@ -16,6 +16,12 @@ spawn_timer = 0;
 shake_frames = 0;
 shake_magnitude = 0;
 hit_stop_frames = 0;
+combo_count = 0;
+combo_timer = 0;
+combat_score = 0;
+floating_texts = [];
+fever_mode = false;
+fever_pulse = 0;
 
 // Particle System
 global.part_sys = part_system_create();
@@ -29,6 +35,16 @@ part_type_color1(global.part_hit, c_red);
 part_type_speed(global.part_hit, 2, 6, -0.1, 0);
 part_type_direction(global.part_hit, 0, 359, 0, 0);
 part_type_life(global.part_hit, 15, 30);
+
+// Explosion Particle Type
+global.part_explosion = part_type_create();
+part_type_shape(global.part_explosion, pt_shape_circle);
+part_type_size(global.part_explosion, 0.5, 1.5, 0.05, 0);
+part_type_color3(global.part_explosion, c_white, c_yellow, c_red);
+part_type_speed(global.part_explosion, 5, 15, -0.2, 0);
+part_type_direction(global.part_explosion, 0, 359, 0, 0);
+part_type_life(global.part_explosion, 20, 40);
+part_type_blend(global.part_explosion, true);
 
 // Parallax background layers (imported sprite resources, back -> front)
 global.bg_layers  = [spr_bg_0, spr_bg_1, spr_bg_2, spr_bg_3, spr_bg_4, spr_bg_5, spr_bg_6];
