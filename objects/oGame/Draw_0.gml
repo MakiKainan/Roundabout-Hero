@@ -25,8 +25,9 @@ if (instance_exists(oKnight)) {
 }
 
 // Timer — top center
-var mins = floor(score / 60);
-var secs = score mod 60;
+var _time_seconds = floor(survival_timer / 60);
+var mins = floor(_time_seconds / 60);
+var secs = _time_seconds mod 60;
 draw_set_color(c_white);
 draw_set_halign(fa_center);
 draw_text(ARENA_CENTER_X, 20, "TIME: " + string(mins) + ":" + (secs < 10 ? "0" : "") + string(secs));
@@ -39,6 +40,26 @@ draw_text(room_width - 20, 20, "SCORE: " + string(score));
 draw_set_halign(fa_left);
 draw_set_color(c_ltgray);
 draw_text(20, 50, "WAVE: " + string(wave_number));
+
+// Combo counter
+if (combo_count > 1) {
+    draw_set_color(c_yellow);
+    // Slight shake or scaling based on timer could be done, simple text for now
+    var c_scale = 1.0 + (combo_count * 0.05);
+    c_scale = min(c_scale, 2.0); // Cap scale
+    draw_text_transformed(20, 80, "COMBO x" + string(combo_count) + "!", c_scale, c_scale, 0);
+}
+
+// Floating texts
+for (var i = 0; i < array_length(floating_texts); i++) {
+    var ft = floating_texts[i];
+    draw_set_alpha(ft.alpha);
+    draw_set_color(ft.color);
+    draw_set_halign(fa_center);
+    draw_text_transformed(ft.x, ft.y, ft.text, 1.5, 1.5, 0);
+}
+draw_set_alpha(1.0);
+draw_set_halign(fa_left);
 
 // Game over overlay
 if (game_state == STATE_GAME_OVER) {

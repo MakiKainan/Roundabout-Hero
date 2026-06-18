@@ -8,3 +8,4 @@ image_speed       = 1;                // multiplier on the sprite's own 5fps
 facing            = 1;                // 1 = face screen-right, -1 = face screen-left
 attack_pose_timer = 0;                // frames left showing the attack pose
 defend_pose_timer = 0;                // frames left showing the defend pose
+perfect_parry_window = 0;             // active perfect parry frames

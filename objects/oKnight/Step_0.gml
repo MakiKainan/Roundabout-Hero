@@ -21,6 +21,7 @@ if (near != noone && abs(near.x - x) > 8) {
 
 if (attack_pose_timer > 0) attack_pose_timer--;
 if (defend_pose_timer > 0) defend_pose_timer--;
+if (perfect_parry_window > 0) perfect_parry_window--;
 
 // Choose the pose sprite (priority: attack > defend > idle). Reset frame on state change.
 if (attack_pose_timer > 0) {
@@ -63,8 +64,21 @@ if ((keyboard_check_pressed(ord("Z")) || mouse_check_button_pressed(mb_left))
                 oGame.shake_frames = 10;
                 oGame.shake_magnitude = 5;
                 oGame.hit_stop_frames = 4;
+                oGame.combo_count++;
+                oGame.combo_timer = 180;
+                oGame.combat_score += 10 + (oGame.combo_count * 2);
                 audio_play_sound(snd_hit, 1, false);
                 part_particles_create(global.part_sys, active.x, active.y, global.part_hit, 20);
+                if (oGame.fever_mode) {
+                    part_particles_create(global.part_sys, active.x, active.y, global.part_explosion, 5);
+                    oGame.shake_frames = 15; oGame.shake_magnitude = 10;
+                    var _ax = active.x; var _ay = active.y; var _aid = active.id;
+                    with (par_enemy) {
+                        if (id != _aid && point_distance(x, y, _ax, _ay) < 120) {
+                            instance_destroy(); oGame.combo_count++; oGame.combat_score += 10;
+                        }
+                    }
+                }
                 instance_destroy(active);
                 break;
             case ENEMY_SHIELDED:
@@ -72,12 +86,27 @@ if ((keyboard_check_pressed(ord("Z")) || mouse_check_button_pressed(mb_left))
                     oGame.shake_frames = 10;
                     oGame.shake_magnitude = 5;
                     oGame.hit_stop_frames = 4;
+                    oGame.combo_count++;
+                    oGame.combo_timer = 180;
+                    oGame.combat_score += 10 + (oGame.combo_count * 2);
                     audio_play_sound(snd_hit, 1, false);
                     part_particles_create(global.part_sys, active.x, active.y, global.part_hit, 20);
+                    if (oGame.fever_mode) {
+                        part_particles_create(global.part_sys, active.x, active.y, global.part_explosion, 5);
+                        oGame.shake_frames = 15; oGame.shake_magnitude = 10;
+                        var _ax = active.x; var _ay = active.y; var _aid = active.id;
+                        with (par_enemy) {
+                            if (id != _aid && point_distance(x, y, _ax, _ay) < 120) {
+                                instance_destroy(); oGame.combo_count++; oGame.combat_score += 10;
+                            }
+                        }
+                    }
                     instance_destroy(active);
                 } else {
                     // Shield absorbs — miss penalty
                     attack_cooldown = ATTACK_COOLDOWN_FRAMES;
+                    oGame.combo_count = 0;
+                    oGame.combo_timer = 0;
                 }
                 break;
             case ENEMY_ASSASSIN:
@@ -95,8 +124,21 @@ if ((keyboard_check_pressed(ord("Z")) || mouse_check_button_pressed(mb_left))
                     oGame.shake_frames = 10;
                     oGame.shake_magnitude = 5;
                     oGame.hit_stop_frames = 4;
+                    oGame.combo_count++;
+                    oGame.combo_timer = 180;
+                    oGame.combat_score += 10 + (oGame.combo_count * 2);
                     audio_play_sound(snd_hit, 1, false);
                     part_particles_create(global.part_sys, active.x, active.y, global.part_hit, 20);
+                    if (oGame.fever_mode) {
+                        part_particles_create(global.part_sys, active.x, active.y, global.part_explosion, 5);
+                        oGame.shake_frames = 15; oGame.shake_magnitude = 10;
+                        var _ax = active.x; var _ay = active.y; var _aid = active.id;
+                        with (par_enemy) {
+                            if (id != _aid && point_distance(x, y, _ax, _ay) < 120) {
+                                instance_destroy(); oGame.combo_count++; oGame.combat_score += 10;
+                            }
+                        }
+                    }
                     instance_destroy(active);
                 }
                 break;
@@ -104,6 +146,8 @@ if ((keyboard_check_pressed(ord("Z")) || mouse_check_button_pressed(mb_left))
     } else {
         // No enemy in range — miss
         attack_cooldown = ATTACK_COOLDOWN_FRAMES;
+        oGame.combo_count = 0;
+        oGame.combo_timer = 0;
     }
 }
 
@@ -112,6 +156,7 @@ if ((keyboard_check_pressed(ord("X")) || mouse_check_button_pressed(mb_right))
     && defend_cooldown == 0) {
 
     defend_pose_timer = KNIGHT_DEFEND_POSE_FRAMES;
+    perfect_parry_window = 15;
     attack_pose_timer = 0;
     sprite_index = spr_knight_defend;
     image_index = 0;
@@ -126,6 +171,7 @@ if ((keyboard_check_pressed(ord("X")) || mouse_check_button_pressed(mb_right))
         if (!active.is_vulnerable) {
             // Correct riposte — stun them, no cooldown
             active.is_vulnerable = true;
+            array_push(oGame.floating_texts, {x: active.x, y: active.y - 40, text: "BLOCK!", color: c_aqua, alpha: 1.5});
         } else {
             // Failsafe use — already vulnerable
             defend_cooldown = DEFEND_COOLDOWN_FRAMES;

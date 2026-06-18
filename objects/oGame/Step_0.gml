@@ -15,6 +15,11 @@ if (game_state == STATE_GAME_OVER && keyboard_check_pressed(ord("R"))) {
     game_state = STATE_PLAYING;
     survival_timer = 0;
     score = 0;
+    combat_score = 0;
+    combo_count = 0;
+    combo_timer = 0;
+    fever_mode = false;
+    fever_pulse = 0;
     difficulty_multiplier = 1.0;
     wave_number = 0;
     wave_pause_timer = 0;
@@ -27,18 +32,50 @@ if (game_state == STATE_GAME_OVER && keyboard_check_pressed(ord("R"))) {
 
 if (game_state == STATE_PLAYING) {
 
+
+
+    // Floating text update
+    for (var i = array_length(floating_texts) - 1; i >= 0; i--) {
+        floating_texts[i].y -= 1;
+        floating_texts[i].alpha -= 0.02;
+        if (floating_texts[i].alpha <= 0) {
+            array_delete(floating_texts, i, 1);
+        }
+    }
+
     if (hit_stop_frames > 0) {
         hit_stop_frames--;
         exit;
     }
 
+    if (combo_count >= 5) {
+        if (!fever_mode) {
+            fever_mode = true;
+            array_push(floating_texts, {x: ARENA_CENTER_X, y: ARENA_CENTER_Y - 100, text: "FEVER MODE!", color: c_red, alpha: 2.0});
+        }
+    } else {
+        fever_mode = false;
+    }
+
+    if (fever_mode) {
+        fever_pulse += 0.1;
+    }
+
+    if (combo_timer > 0) {
+        combo_timer--;
+        if (combo_timer <= 0) {
+            combo_count = 0;
+        }
+    }
+
     survival_timer++;
-    score = floor(survival_timer / 60);
+    score = combat_score + floor(survival_timer / 60);
 
     // Parallax scrolling
+    var bg_mult = fever_mode ? 2.5 : 1.0;
     if (variable_global_exists("bg_layers")) {
         for (var i = 0; i < array_length(global.bg_layers); i++) {
-            global.bg_offsets[i] -= global.bg_speeds[i]; // Move left
+            global.bg_offsets[i] -= (global.bg_speeds[i] * bg_mult); // Move left
         }
     }
 
