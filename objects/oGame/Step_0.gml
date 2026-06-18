@@ -15,6 +15,11 @@ if (game_state == STATE_GAME_OVER && keyboard_check_pressed(ord("R"))) {
     game_state = STATE_PLAYING;
     survival_timer = 0;
     score = 0;
+    combat_score = 0;
+    combo_count = 0;
+    combo_timer = 0;
+    fever_mode = false;
+    fever_pulse = 0;
     difficulty_multiplier = 1.0;
     wave_number = 0;
     wave_pause_timer = 0;
