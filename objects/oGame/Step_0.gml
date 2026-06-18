@@ -31,9 +31,6 @@ if (game_state == STATE_GAME_OVER && keyboard_check_pressed(ord("R"))) {
 }
 
 if (game_state == STATE_PLAYING) {
-
-
-
     // Floating text update
     for (var i = array_length(floating_texts) - 1; i >= 0; i--) {
         floating_texts[i].y -= 1;

@@ -38,13 +38,14 @@ As time passes, waves grow larger and faster until you fall — a pure test of s
 - **0:00 – 0:30** – 2-5 enemies per wave; Bandits and the occasional Shielded Bandit (learning phase, no Assassins)
 - **0:30+** – 3-7 enemies per wave; Assassins enter the mix (~1 in 5 enemies); wave size continues to grow over time
 
-Enemy speed increases with survival time. Your score is your **survival time** — the longer you last, the higher your score.
+Enemy speed increases with survival time. Your score combines **survival time** and **combat score** — kill streaks without taking a hit build a combo multiplier, and reaching 5 consecutive kills triggers **Fever Mode**, rewarding aggressive play.
 
 ## Visual Feedback
 
 - **Screen shake** on every hit taken
-- **Particle burst** at the point of impact
-- **Yellow ring** around the knight shows the active attack range
+- **Particle burst** at the point of impact (red on damage, purple on Assassin backstep)
+- **7-layer parallax background** with depth-based scroll speeds; accelerates in Fever Mode
+- **Combo counter** and **Fever Mode** flash when on a kill streak (5+ kills without being hit)
 - **Wave counter** and **timer** always visible
 
 ## Technical Stack
@@ -64,7 +65,10 @@ Enemy speed increases with survival time. Your score is your **survival time** �
 - [x] Pause / resume (ESC or P)
 - [x] Screen shake and particle effects on damage
 - [x] Knight pixel art sprites — animated idle / attack / defend with directional facing
-- [ ] Enemy pixel art sprites (currently colored squares)
+- [x] Bandit & Shielded Bandit pixel art sprites (walk / attack / vulnerable, animated)
+- [x] Assassin pixel art sprites — walk / backstep (reversed recoil + purple burst) / attack
+- [x] 7-layer parallax background with depth scroll
+- [x] Combo / Fever Mode system (persists across waves, resets on hit)
 - [ ] Sound effects and music
 - [ ] Persistent high score / leaderboard
 - [ ] Mobile controls
@@ -84,5 +88,5 @@ Enemy speed increases with survival time. Your score is your **survival time** �
 
 ---
 
-**Status:** In active development — v0.31  
+**Status:** In active development — v0.6  
 **Last Updated:** June 2026

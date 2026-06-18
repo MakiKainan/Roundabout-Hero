@@ -66,6 +66,15 @@ auto_align_sprite_origin(spr_knight_idle);
 sprite_set_offset(spr_knight_attack, sprite_get_xoffset(spr_knight_idle), sprite_get_yoffset(spr_knight_idle));
 sprite_set_offset(spr_knight_defend, sprite_get_xoffset(spr_knight_idle), sprite_get_yoffset(spr_knight_idle));
 
+// Assassin teleport burst (purple)
+global.part_teleport = part_type_create();
+part_type_shape(global.part_teleport, pt_shape_square);
+part_type_size(global.part_teleport, 0.1, 0.4, -0.01, 0);
+part_type_color1(global.part_teleport, make_color_rgb(160, 60, 220));
+part_type_speed(global.part_teleport, 3, 8, -0.15, 0);
+part_type_direction(global.part_teleport, 0, 359, 0, 0);
+part_type_life(global.part_teleport, 15, 30);
+
 var b_walk = asset_get_index("spr_bandit_walk");
 var b_attack = asset_get_index("spr_bandit_attack");
 
@@ -87,6 +96,15 @@ if (sprite_exists(s_walk)) {
     if (sprite_exists(s_attack)) {
         sprite_set_offset(s_attack, sprite_get_xoffset(s_walk), sprite_get_yoffset(s_walk));
     }
+}
+
+var a_walk     = asset_get_index("spr_assassin_walk");
+var a_backstep = asset_get_index("spr_assassin_backstep");
+var a_attack   = asset_get_index("spr_assassin_attack");
+auto_align_sprite_origin(a_walk);
+if (sprite_exists(a_walk)) {
+    if (sprite_exists(a_backstep)) { sprite_set_offset(a_backstep, sprite_get_xoffset(a_walk), sprite_get_yoffset(a_walk)); }
+    if (sprite_exists(a_attack))   { sprite_set_offset(a_attack,   sprite_get_xoffset(a_walk), sprite_get_yoffset(a_walk)); }
 }
 
 instance_create_layer(PLAYER_START_X, PLAYER_START_Y, "Instances", oKnight);
