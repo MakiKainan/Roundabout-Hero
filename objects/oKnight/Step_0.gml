@@ -65,7 +65,7 @@ if ((keyboard_check_pressed(ord("Z")) || mouse_check_button_pressed(mb_left))
                 oGame.shake_magnitude = 5;
                 oGame.hit_stop_frames = 4;
                 oGame.combo_count++;
-                oGame.combo_timer = 180;
+                oGame.combo_count++;
                 oGame.combat_score += 10 + (oGame.combo_count * 2);
                 audio_play_sound(snd_hit, 1, false);
                 part_particles_create(global.part_sys, active.x, active.y, global.part_hit, 20);
@@ -75,11 +75,13 @@ if ((keyboard_check_pressed(ord("Z")) || mouse_check_button_pressed(mb_left))
                     var _ax = active.x; var _ay = active.y; var _aid = active.id;
                     with (par_enemy) {
                         if (id != _aid && point_distance(x, y, _ax, _ay) < 120) {
-                            instance_destroy(); oGame.combo_count++; oGame.combat_score += 10;
+                            if (enemy_type == ENEMY_SHIELDED && !is_vulnerable) continue;
+                            instance_destroy(); oGame.combo_count++; oGame.combat_score += 10; oGame.style_score += 15;
                         }
                     }
                 }
                 instance_destroy(active);
+                adrenaline = min(adrenaline_max, adrenaline + 10);
                 break;
             case ENEMY_SHIELDED:
                 if (active.is_vulnerable) {
@@ -89,6 +91,7 @@ if ((keyboard_check_pressed(ord("Z")) || mouse_check_button_pressed(mb_left))
                     oGame.combo_count++;
                     oGame.combo_timer = 180;
                     oGame.combat_score += 10 + (oGame.combo_count * 2);
+                    oGame.style_score += 30;
                     audio_play_sound(snd_hit, 1, false);
                     part_particles_create(global.part_sys, active.x, active.y, global.part_hit, 20);
                     if (oGame.fever_mode) {
@@ -97,15 +100,17 @@ if ((keyboard_check_pressed(ord("Z")) || mouse_check_button_pressed(mb_left))
                         var _ax = active.x; var _ay = active.y; var _aid = active.id;
                         with (par_enemy) {
                             if (id != _aid && point_distance(x, y, _ax, _ay) < 120) {
-                                instance_destroy(); oGame.combo_count++; oGame.combat_score += 10;
+                                if (enemy_type == ENEMY_SHIELDED && !is_vulnerable) continue;
+                                instance_destroy(); oGame.combo_count++; oGame.combat_score += 10; oGame.style_score += 15;
                             }
                         }
                     }
                     instance_destroy(active);
+                    adrenaline = min(adrenaline_max, adrenaline + 10);
                 } else {
                     // Shield absorbs — miss penalty
                     attack_cooldown = ATTACK_COOLDOWN_FRAMES;
-                    oGame.combo_count = 0;
+                    oGame.combo_count = max(0, oGame.combo_count - 1);
                     oGame.combo_timer = 0;
                 }
                 break;
@@ -127,6 +132,7 @@ if ((keyboard_check_pressed(ord("Z")) || mouse_check_button_pressed(mb_left))
                     oGame.combo_count++;
                     oGame.combo_timer = 180;
                     oGame.combat_score += 10 + (oGame.combo_count * 2);
+                    oGame.style_score += 30;
                     audio_play_sound(snd_hit, 1, false);
                     part_particles_create(global.part_sys, active.x, active.y, global.part_hit, 20);
                     if (oGame.fever_mode) {
@@ -135,18 +141,20 @@ if ((keyboard_check_pressed(ord("Z")) || mouse_check_button_pressed(mb_left))
                         var _ax = active.x; var _ay = active.y; var _aid = active.id;
                         with (par_enemy) {
                             if (id != _aid && point_distance(x, y, _ax, _ay) < 120) {
-                                instance_destroy(); oGame.combo_count++; oGame.combat_score += 10;
+                                if (enemy_type == ENEMY_SHIELDED && !is_vulnerable) continue;
+                                instance_destroy(); oGame.combo_count++; oGame.combat_score += 10; oGame.style_score += 15;
                             }
                         }
                     }
                     instance_destroy(active);
+                    adrenaline = min(adrenaline_max, adrenaline + 10);
                 }
                 break;
         }
     } else {
         // No enemy in range — miss
         attack_cooldown = ATTACK_COOLDOWN_FRAMES;
-        oGame.combo_count = 0;
+        oGame.combo_count = max(0, oGame.combo_count - 1);
         oGame.combo_timer = 0;
     }
 }
@@ -179,5 +187,25 @@ if ((keyboard_check_pressed(ord("X")) || mouse_check_button_pressed(mb_right))
     } else {
         // Failsafe use — 5s cooldown
         defend_cooldown = DEFEND_COOLDOWN_FRAMES;
+    }
+}
+
+// Ultimate Ability — Spacebar
+if (keyboard_check_pressed(vk_space) && adrenaline >= adrenaline_max) {
+    adrenaline = 0;
+    
+    oGame.ultimate_flash = 1.0;
+    oGame.shake_frames = 30;
+    oGame.shake_magnitude = 20;
+    oGame.hit_stop_frames = 15;
+    
+    audio_play_sound(snd_hit, 1, false);
+    array_push(oGame.floating_texts, {x: ARENA_CENTER_X, y: ARENA_CENTER_Y - 100, text: "ULTIMATE UNLEASHED!", color: c_fuchsia, alpha: 2.0});
+    
+    with (par_enemy) {
+        part_particles_create(global.part_sys, x, y, global.part_explosion, 20);
+        oGame.combat_score += 20;
+        oGame.combo_count++;
+        instance_destroy();
     }
 }

@@ -19,5 +19,25 @@ for (var i = 0; i < PLAYER_MAX_HP; i++) {
 
 // Cooldown indicators
 draw_set_color(c_white);
-if (attack_cooldown > 0) draw_text(20, 60, "ATK CD: " + string(ceil(attack_cooldown / 60)));
-if (defend_cooldown > 0) draw_text(20, 80, "DEF CD: " + string(ceil(defend_cooldown / 60)));
+if (attack_cooldown > 0) draw_text(20, 80, "ATK CD: " + string(ceil(attack_cooldown / 60)));
+if (defend_cooldown > 0) draw_text(20, 100, "DEF CD: " + string(ceil(defend_cooldown / 60)));
+
+// Adrenaline Bar
+var _ad_width = 150;
+var _ad_fill = (adrenaline / adrenaline_max) * _ad_width;
+var _ad_y = 55;
+
+draw_set_color(c_dkgray);
+draw_rectangle(20, _ad_y, 20 + _ad_width, _ad_y + 10, false);
+
+if (adrenaline >= adrenaline_max) {
+    // Flashing full bar
+    var _flash = (current_time mod 200 < 100) ? c_white : c_aqua;
+    draw_set_color(_flash);
+} else {
+    draw_set_color(c_aqua);
+}
+
+draw_rectangle(20, _ad_y, 20 + _ad_fill, _ad_y + 10, false);
+draw_set_color(c_white);
+draw_rectangle(20, _ad_y, 20 + _ad_width, _ad_y + 10, true);
