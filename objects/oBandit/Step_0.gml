@@ -40,6 +40,7 @@ if (state == "moving") {
             oGame.combo_count++;
             oGame.combo_timer = 180;
             oGame.combat_score += 50; // Bonus for parry
+            oGame.style_score += 80;
             audio_play_sound(snd_hit, 1, false);
             part_particles_create(global.part_sys, x, y, global.part_hit, 30);
             array_push(oGame.floating_texts, {x: x, y: y - 40, text: "PERFECT!", color: c_yellow, alpha: 1.5});
@@ -49,7 +50,8 @@ if (state == "moving") {
             var _ax = x; var _ay = y; var _aid = id;
             with (par_enemy) {
                 if (id != _aid && point_distance(x, y, _ax, _ay) < 150) {
-                    instance_destroy(); oGame.combo_count++; oGame.combat_score += 10;
+                    if (enemy_type == ENEMY_SHIELDED && !is_vulnerable) continue;
+                    instance_destroy(); oGame.combo_count++; oGame.combat_score += 10; oGame.style_score += 15;
                 }
             }
             
@@ -61,8 +63,7 @@ if (state == "moving") {
         
         // Deal damage IMMEDIATELY on contact
         oKnight.hp--;
-        oGame.combo_count = 0;
-        oGame.combo_timer = 0;
+        oGame.combo_count = max(0, oGame.combo_count - 5);
         oGame.shake_frames = 15;
         oGame.shake_magnitude = 8;
         oGame.hit_stop_frames = 6;

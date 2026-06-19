@@ -33,6 +33,7 @@ if (state == "moving") {
     // Reached the player — deal damage immediately, then play the attack swing
     if (point_distance(x, y, oKnight.x, oKnight.y) < ENEMY_CONTACT_DIST) {
         oKnight.hp--;
+        oGame.combo_count = max(0, oGame.combo_count - 5);
         oGame.shake_frames = 15;
         oGame.shake_magnitude = 8;
         part_particles_create(global.part_sys, oKnight.x, oKnight.y, global.part_hit, 15);

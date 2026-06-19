@@ -20,6 +20,9 @@ if (game_state == STATE_GAME_OVER && keyboard_check_pressed(ord("R"))) {
     combo_timer = 0;
     fever_mode = false;
     fever_pulse = 0;
+    style_score = 0;
+    style_rank = "D";
+    style_display_score = 0;
     difficulty_multiplier = 1.0;
     wave_number = 0;
     wave_pause_timer = 0;
@@ -31,6 +34,18 @@ if (game_state == STATE_GAME_OVER && keyboard_check_pressed(ord("R"))) {
 }
 
 if (game_state == STATE_PLAYING) {
+    // Style Meter Logic
+    style_score = combo_count * 30; // 30 points per combo means ~20 combo for SSS
+    style_display_score += (style_score - style_display_score) * 0.1;
+
+    if (style_score < 100) style_rank = "D";
+    else if (style_score < 200) style_rank = "C";
+    else if (style_score < 300) style_rank = "B";
+    else if (style_score < 400) style_rank = "A";
+    else if (style_score < 500) style_rank = "S";
+    else if (style_score < 600) style_rank = "SS";
+    else style_rank = "SSS";
+
     // Floating text update
     for (var i = array_length(floating_texts) - 1; i >= 0; i--) {
         floating_texts[i].y -= 1;
@@ -56,13 +71,6 @@ if (game_state == STATE_PLAYING) {
 
     if (fever_mode) {
         fever_pulse += 0.1;
-    }
-
-    if (combo_timer > 0) {
-        combo_timer--;
-        if (combo_timer <= 0) {
-            combo_count = 0;
-        }
     }
 
     survival_timer++;
