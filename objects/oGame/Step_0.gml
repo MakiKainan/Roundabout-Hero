@@ -23,6 +23,10 @@ if (game_state == STATE_GAME_OVER && keyboard_check_pressed(ord("R"))) {
     style_score = 0;
     style_rank = "D";
     style_display_score = 0;
+    ultimate_flash = 0;
+    if (instance_exists(oKnight)) {
+        oKnight.adrenaline = 0;
+    }
     difficulty_multiplier = 1.0;
     wave_number = 0;
     wave_pause_timer = 0;
@@ -71,6 +75,10 @@ if (game_state == STATE_PLAYING) {
 
     if (fever_mode) {
         fever_pulse += 0.1;
+    }
+
+    if (ultimate_flash > 0) {
+        ultimate_flash = max(0, ultimate_flash - 0.05);
     }
 
     survival_timer++;

@@ -81,6 +81,7 @@ if ((keyboard_check_pressed(ord("Z")) || mouse_check_button_pressed(mb_left))
                     }
                 }
                 instance_destroy(active);
+                adrenaline = min(adrenaline_max, adrenaline + 10);
                 break;
             case ENEMY_SHIELDED:
                 if (active.is_vulnerable) {
@@ -105,6 +106,7 @@ if ((keyboard_check_pressed(ord("Z")) || mouse_check_button_pressed(mb_left))
                         }
                     }
                     instance_destroy(active);
+                    adrenaline = min(adrenaline_max, adrenaline + 10);
                 } else {
                     // Shield absorbs — miss penalty
                     attack_cooldown = ATTACK_COOLDOWN_FRAMES;
@@ -145,6 +147,7 @@ if ((keyboard_check_pressed(ord("Z")) || mouse_check_button_pressed(mb_left))
                         }
                     }
                     instance_destroy(active);
+                    adrenaline = min(adrenaline_max, adrenaline + 10);
                 }
                 break;
         }
@@ -184,5 +187,25 @@ if ((keyboard_check_pressed(ord("X")) || mouse_check_button_pressed(mb_right))
     } else {
         // Failsafe use — 5s cooldown
         defend_cooldown = DEFEND_COOLDOWN_FRAMES;
+    }
+}
+
+// Ultimate Ability — Spacebar
+if (keyboard_check_pressed(vk_space) && adrenaline >= adrenaline_max) {
+    adrenaline = 0;
+    
+    oGame.ultimate_flash = 1.0;
+    oGame.shake_frames = 30;
+    oGame.shake_magnitude = 20;
+    oGame.hit_stop_frames = 15;
+    
+    audio_play_sound(snd_hit, 1, false);
+    array_push(oGame.floating_texts, {x: ARENA_CENTER_X, y: ARENA_CENTER_Y - 100, text: "ULTIMATE UNLEASHED!", color: c_fuchsia, alpha: 2.0});
+    
+    with (par_enemy) {
+        part_particles_create(global.part_sys, x, y, global.part_explosion, 20);
+        oGame.combat_score += 20;
+        oGame.combo_count++;
+        instance_destroy();
     }
 }

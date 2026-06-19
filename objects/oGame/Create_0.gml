@@ -25,6 +25,7 @@ style_display_score = 0;
 floating_texts = [];
 fever_mode = false;
 fever_pulse = 0;
+ultimate_flash = 0;
 
 // Particle System
 global.part_sys = part_system_create();

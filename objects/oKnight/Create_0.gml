@@ -1,6 +1,8 @@
 hp = PLAYER_MAX_HP;
 attack_cooldown = 0;
 defend_cooldown = 0;
+adrenaline = 0;
+adrenaline_max = 100;
 
 // Sprite state (visual)
 sprite_index      = spr_knight_idle;  // drives the auto-advancing animation frame

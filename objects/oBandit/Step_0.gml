@@ -41,6 +41,7 @@ if (state == "moving") {
             oGame.combo_timer = 180;
             oGame.combat_score += 50; // Bonus for parry
             oGame.style_score += 80;
+            oKnight.adrenaline = min(oKnight.adrenaline_max, oKnight.adrenaline + 25);
             audio_play_sound(snd_hit, 1, false);
             part_particles_create(global.part_sys, x, y, global.part_hit, 30);
             array_push(oGame.floating_texts, {x: x, y: y - 40, text: "PERFECT!", color: c_yellow, alpha: 1.5});
@@ -63,6 +64,7 @@ if (state == "moving") {
         
         // Deal damage IMMEDIATELY on contact
         oKnight.hp--;
+        oKnight.adrenaline = max(0, oKnight.adrenaline - 30);
         oGame.combo_count = max(0, oGame.combo_count - 5);
         oGame.shake_frames = 15;
         oGame.shake_magnitude = 8;
