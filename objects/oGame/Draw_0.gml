@@ -16,6 +16,130 @@ draw_set_color(c_ltgray);
 draw_ellipse(ARENA_CENTER_X - ARENA_RADIUS_X, ARENA_CENTER_Y - ARENA_RADIUS_Y,
              ARENA_CENTER_X + ARENA_RADIUS_X, ARENA_CENTER_Y + ARENA_RADIUS_Y, true);  // Outline
 
+// Boss — drawn here so it appears above parallax, behind enemies/player
+if (instance_exists(oBoss)) {
+    with (oBoss) {
+        var _bob = sin(current_time * 0.002) * 6;
+        var _cx  = x;
+        var _cy  = y + _bob;
+
+        // Shadow
+        draw_set_color(c_black);
+        draw_set_alpha(0.4);
+        draw_ellipse(_cx - 100, _cy + 120, _cx + 100, _cy + 140, false);
+        draw_set_alpha(1.0);
+
+        var _body_col = (hit_flash > 0 && (hit_flash mod 4 < 2)) ? c_white : make_color_rgb(30, 0, 60);
+        var _robe_col = (hit_flash > 0 && (hit_flash mod 4 < 2)) ? c_white : make_color_rgb(60, 0, 100);
+
+        // Robe
+        draw_set_color(_robe_col);
+        draw_triangle(_cx - 90, _cy + 110, _cx + 90, _cy + 110, _cx, _cy - 90, false);
+
+        // Body
+        draw_set_color(_body_col);
+        draw_rectangle(_cx - 30, _cy - 80, _cx + 30, _cy + 60, false);
+
+        // Head
+        draw_set_color(_body_col);
+        draw_circle(_cx, _cy - 100, 42, false);
+
+        // Glowing eyes
+        var _eye_pulse = abs(sin(current_time * 0.004)) * 0.6 + 0.4;
+        draw_set_alpha(_eye_pulse);
+        draw_set_color(c_orange);
+        draw_circle(_cx - 15, _cy - 104, 8, false);
+        draw_circle(_cx + 15, _cy - 104, 8, false);
+        draw_set_alpha(1.0);
+
+        // Crown
+        draw_set_color(make_color_rgb(200, 150, 0));
+        draw_triangle(_cx - 30, _cy - 138, _cx - 20, _cy - 115, _cx - 10, _cy - 138, false);
+        draw_triangle(_cx - 10, _cy - 148, _cx,      _cy - 120, _cx + 10, _cy - 148, false);
+        draw_triangle(_cx + 10, _cy - 138, _cx + 20, _cy - 115, _cx + 30, _cy - 138, false);
+
+        // Floating hands
+        var _hand_bob = sin(current_time * 0.003) * 10;
+        draw_set_color(make_color_rgb(120, 0, 180));
+        draw_circle(_cx - 110, _cy + _hand_bob, 18, false);
+        draw_circle(_cx + 110, _cy + _hand_bob, 18, false);
+
+        // HP bar
+        var _bar_w  = 200;
+        var _bar_x  = _cx - _bar_w / 2;
+        var _bar_y  = _cy - 175;
+        var _hp_frac = hp / max_hp;
+        draw_set_color(c_dkgray);
+        draw_rectangle(_bar_x, _bar_y, _bar_x + _bar_w, _bar_y + 12, false);
+        draw_set_color(merge_color(c_red, c_lime, _hp_frac));
+        draw_rectangle(_bar_x, _bar_y, _bar_x + _bar_w * _hp_frac, _bar_y + 12, false);
+        draw_set_color(c_white);
+        draw_rectangle(_bar_x, _bar_y, _bar_x + _bar_w, _bar_y + 12, true);
+
+        draw_set_halign(fa_center);
+        draw_set_color(c_red);
+        draw_text(_cx, _bar_y - 20, "THE SORCERER LORD");
+        draw_set_color(c_white);
+        draw_text(_cx, _bar_y - 5,  "HP: " + string(hp) + " / " + string(max_hp));
+        draw_set_halign(fa_left);
+    }
+}
+
+// Boss projectiles — drawn here in correct order
+with (oBossProjectile) {
+    var _radius = 18;
+    var _trail  = 8;
+
+    if (proj_type == PROJ_TYPE_FIRE) {
+        var _pulse = abs(sin(current_time * 0.008)) * 0.4 + 0.6;
+        draw_set_alpha(0.35);
+        draw_set_color(c_orange);
+        draw_circle(x - lengthdir_x(_trail, direction), y - lengthdir_y(_trail, direction), _radius * 0.9, false);
+        draw_set_alpha(0.2);
+        draw_circle(x - lengthdir_x(_trail * 2, direction), y - lengthdir_y(_trail * 2, direction), _radius * 0.6, false);
+        draw_set_alpha(_pulse);
+        draw_set_color(c_red);
+        draw_circle(x, y, _radius, false);
+        draw_set_color(c_yellow);
+        draw_circle(x, y, _radius * 0.55, false);
+        draw_set_alpha(1.0);
+        draw_set_color(c_orange);
+        for (var fi = 0; fi < 4; fi++) {
+            var _fang = spin + fi * 90;
+            draw_triangle(
+                x + lengthdir_x(_radius + 6, _fang), y + lengthdir_y(_radius + 6, _fang),
+                x + lengthdir_x(_radius - 4, _fang - 20), y + lengthdir_y(_radius - 4, _fang - 20),
+                x + lengthdir_x(_radius - 4, _fang + 20), y + lengthdir_y(_radius - 4, _fang + 20),
+                false);
+        }
+        draw_set_color(c_red);
+        draw_set_halign(fa_center);
+        draw_text(x, y + _radius + 6, "Z");
+    } else {
+        var _pulse = abs(sin(current_time * 0.006)) * 0.35 + 0.65;
+        draw_set_alpha(0.25);
+        draw_set_color(c_aqua);
+        draw_circle(x, y, _radius + 10, false);
+        draw_set_alpha(_pulse);
+        draw_set_color(make_color_rgb(80, 0, 220));
+        draw_circle(x, y, _radius, false);
+        draw_set_color(c_aqua);
+        draw_circle(x, y, _radius * 0.45, false);
+        draw_set_alpha(1.0);
+        draw_set_color(c_aqua);
+        for (var fi = 0; fi < 6; fi++) {
+            var _fang = spin + fi * 60;
+            draw_circle(x + lengthdir_x(_radius + 4, _fang), y + lengthdir_y(_radius + 4, _fang), 4, false);
+        }
+        draw_set_color(c_aqua);
+        draw_set_halign(fa_center);
+        draw_text(x, y + _radius + 6, "X");
+    }
+    draw_set_alpha(1.0);
+    draw_set_halign(fa_left);
+}
+
+
 // Attack range ring around player
 if (instance_exists(oKnight)) {
     draw_set_color(c_yellow);

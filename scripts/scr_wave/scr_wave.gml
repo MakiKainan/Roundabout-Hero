@@ -6,6 +6,31 @@ function arena_y(angle) { return ARENA_CENTER_Y + lengthdir_y(ARENA_RADIUS_Y, an
 
 function spawn_wave() {
     wave_number++;
+
+    // Every BOSS_WAVE_INTERVAL waves, spawn the boss instead of normal enemies
+    if ((wave_number mod BOSS_WAVE_INTERVAL) == 0) {
+        // Clear any leftover projectiles from previous boss fight
+        with (oBossProjectile) instance_destroy();
+
+        // Announce the boss wave
+        oGame.spawn_queue   = [];
+        enemies_in_wave     = 1;
+        oGame.ultimate_flash = 0.3;
+        oGame.shake_frames   = 20;
+        oGame.shake_magnitude = 8;
+        array_push(oGame.floating_texts, {
+            x: ARENA_CENTER_X, y: ARENA_CENTER_Y,
+            text: "BOSS WAVE " + string(wave_number) + "!", color: c_red, alpha: 2.0
+        });
+
+        // Spawn the boss at screen centre
+        var _boss = instance_create_layer(ARENA_CENTER_X, -200, "Instances", oBoss);
+        _boss.max_hp = BOSS_MAX_HP + (wave_number div BOSS_WAVE_INTERVAL - 1) * 5; // scales up each encounter
+        _boss.hp     = _boss.max_hp;
+        oGame.spawn_timer = 0;
+        return;
+    }
+
     var composition = get_wave_composition();
     enemies_in_wave = array_length(composition);
 
