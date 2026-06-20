@@ -82,6 +82,38 @@ if (instance_exists(oBoss)) {
         draw_set_color(c_white);
         draw_text(_cx, _bar_y - 5,  "HP: " + string(hp) + " / " + string(max_hp));
         draw_set_halign(fa_left);
+        
+        // Death Execution Slashes & Prompt
+        if (is_dying) {
+            draw_set_halign(fa_center);
+            
+            // Draw Slashes
+            for (var i = 0; i < array_length(slashes); i++) {
+                var _s = slashes[i];
+                var _alpha = _s.frames / 10.0;
+                
+                // Glow
+                draw_set_alpha(_alpha * 0.5);
+                draw_set_color(c_red);
+                draw_line_width(_s.x1, _s.y1, _s.x2, _s.y2, 12);
+                
+                // Core
+                draw_set_alpha(_alpha);
+                draw_set_color(c_white);
+                draw_line_width(_s.x1, _s.y1, _s.x2, _s.y2, 4);
+            }
+            
+            // Draw MASH Prompt
+            draw_set_alpha(1.0);
+            draw_set_color(c_red);
+            var _pulse = 1.5 + abs(sin(current_time * 0.015)) * 0.5;
+            draw_text_transformed(_cx, _cy + 40, "MASH Z!", _pulse, _pulse, random_range(-2, 2));
+            
+            draw_set_color(c_white);
+            draw_text_transformed(_cx, _cy + 80, string(mash_count) + " HITS", 1.5, 1.5, 0);
+            
+            draw_set_halign(fa_left);
+        }
     }
 }
 
@@ -137,6 +169,46 @@ with (oBossProjectile) {
     }
     draw_set_alpha(1.0);
     draw_set_halign(fa_left);
+}
+
+// Death Orb (drawn massive and scary)
+with (oDeathOrb) {
+    var _pulse = abs(sin(current_time * 0.01 + pulse)) * 0.3 + 0.7;
+    var _base_rad = 35 + (volley_count * 2);
+    
+    // Aura
+    draw_set_alpha(_pulse * 0.5);
+    draw_set_color(c_fuchsia);
+    draw_circle(x + random_range(-5, 5), y + random_range(-5, 5), _base_rad * 1.5, false);
+    draw_set_color(c_red);
+    draw_circle(x, y, _base_rad * 1.2, false);
+    
+    // Core
+    draw_set_alpha(1.0);
+    draw_set_color(c_black);
+    draw_circle(x, y, _base_rad, false);
+    
+    // Outer rim
+    draw_set_color(c_red);
+    draw_circle(x, y, _base_rad, true);
+    draw_circle(x, y, _base_rad - 1, true);
+    draw_circle(x, y, _base_rad - 2, true);
+    
+    // Trailing shadow
+    draw_set_alpha(0.3);
+    draw_set_color(c_black);
+    draw_circle(x - lengthdir_x(_base_rad, direction), y - lengthdir_y(_base_rad, direction), _base_rad * 0.8, false);
+    
+    // Hint text for player
+    if (direction == 270) {
+        draw_set_alpha(1.0);
+        draw_set_color(c_white);
+        draw_set_halign(fa_center);
+        draw_text(x, y - 10, "Z/X");
+        draw_set_halign(fa_left);
+    }
+    
+    draw_set_alpha(1.0);
 }
 
 
