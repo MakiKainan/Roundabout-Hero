@@ -9,8 +9,9 @@ if (keyboard_check_pressed(vk_escape) || keyboard_check_pressed(ord("P"))) {
 
 // Restart
 if (game_state == STATE_GAME_OVER && keyboard_check_pressed(ord("R"))) {
-    with (par_enemy) instance_destroy();
-    with (oKnight)   instance_destroy();
+    with (par_enemy)       instance_destroy();
+    with (oKnight)         instance_destroy();
+    with (oBossProjectile) instance_destroy();
 
     game_state = STATE_PLAYING;
     survival_timer = 0;

@@ -57,3 +57,12 @@
 #macro ENEMY_BANDIT 0
 #macro ENEMY_SHIELDED 1
 #macro ENEMY_ASSASSIN 2
+
+// Boss
+#macro BOSS_WAVE_INTERVAL 5         // Boss appears every 5 waves
+#macro BOSS_MAX_HP 10               // Big boss health pool
+#macro BOSS_ATTACK_INTERVAL 90      // Fires a single projectile every 1.5 seconds (90 frames)
+#macro BOSS_PROJ_SPEED 0.5          // degrees per frame along the ellipse arc
+#macro BOSS_DRAW_SCALE 4.0          // Big lad — 4x scale in the background
+#macro PROJ_TYPE_FIRE 0             // Red fireball — reflected by Attack (Z)
+#macro PROJ_TYPE_MAGIC 1            // Blue orb — reflected by Defend (X)

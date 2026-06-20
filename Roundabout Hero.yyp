@@ -21,6 +21,8 @@
   "resources":[
     {"id":{"name":"oAssassin","path":"objects/oAssassin/oAssassin.yy",},},
     {"id":{"name":"oBandit","path":"objects/oBandit/oBandit.yy",},},
+    {"id":{"name":"oBoss","path":"objects/oBoss/oBoss.yy",},},
+    {"id":{"name":"oBossProjectile","path":"objects/oBossProjectile/oBossProjectile.yy",},},
     {"id":{"name":"oGame","path":"objects/oGame/oGame.yy",},},
     {"id":{"name":"oKnight","path":"objects/oKnight/oKnight.yy",},},
     {"id":{"name":"oShieldedBandit","path":"objects/oShieldedBandit/oShieldedBandit.yy",},},
