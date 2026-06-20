@@ -13,3 +13,9 @@ y           = -200;                  // start off-screen above
 
 // Recoil when hit
 hit_flash   = 0;           // frames of white flash when struck
+
+// Death Execution State
+is_dying    = false;
+mash_timer  = 0;
+mash_count  = 0;
+slashes     = [];          // Array of {x1, y1, x2, y2, frames}

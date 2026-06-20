@@ -98,8 +98,8 @@ if (direction == 90 && instance_exists(boss_id)) {
             oGame.combat_score += 500;
             oKnight.adrenaline = min(oKnight.adrenaline_max, oKnight.adrenaline + 50);
             
-            audio_play_sound(snd_hit, 1, false);
-            audio_sound_pitch(snd_hit, 0.5); // Deep bass explosion
+            var _nuke_snd = audio_play_sound(snd_hit, 1, false);
+            audio_sound_pitch(_nuke_snd, 0.5); // Deep bass explosion
             
             part_particles_create(global.part_sys, boss_id.x, boss_id.y, global.part_explosion, 50);
             array_push(oGame.floating_texts, {

@@ -82,6 +82,38 @@ if (instance_exists(oBoss)) {
         draw_set_color(c_white);
         draw_text(_cx, _bar_y - 5,  "HP: " + string(hp) + " / " + string(max_hp));
         draw_set_halign(fa_left);
+        
+        // Death Execution Slashes & Prompt
+        if (is_dying) {
+            draw_set_halign(fa_center);
+            
+            // Draw Slashes
+            for (var i = 0; i < array_length(slashes); i++) {
+                var _s = slashes[i];
+                var _alpha = _s.frames / 10.0;
+                
+                // Glow
+                draw_set_alpha(_alpha * 0.5);
+                draw_set_color(c_red);
+                draw_line_width(_s.x1, _s.y1, _s.x2, _s.y2, 12);
+                
+                // Core
+                draw_set_alpha(_alpha);
+                draw_set_color(c_white);
+                draw_line_width(_s.x1, _s.y1, _s.x2, _s.y2, 4);
+            }
+            
+            // Draw MASH Prompt
+            draw_set_alpha(1.0);
+            draw_set_color(c_red);
+            var _pulse = 1.5 + abs(sin(current_time * 0.015)) * 0.5;
+            draw_text_transformed(_cx, _cy + 40, "MASH Z!", _pulse, _pulse, random_range(-2, 2));
+            
+            draw_set_color(c_white);
+            draw_text_transformed(_cx, _cy + 80, string(mash_count) + " HITS", 1.5, 1.5, 0);
+            
+            draw_set_halign(fa_left);
+        }
     }
 }
 

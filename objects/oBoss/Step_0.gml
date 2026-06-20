@@ -17,6 +17,78 @@ if (!enter_done) {
     exit;
 }
 
+// --- Death Execution Loop ---
+if (is_dying) {
+    // Freeze the rest of the game
+    oGame.hit_stop_frames = 2; 
+    
+    mash_timer--;
+    
+    // Listen for mashing
+    if (keyboard_check_pressed(ord("Z")) || keyboard_check_pressed(ord("X")) || mouse_check_button_pressed(mb_left)) {
+        mash_count++;
+        
+        // Massive juice per hit
+        oGame.shake_frames = 10;
+        oGame.shake_magnitude = 15 + min(mash_count, 20);
+        audio_play_sound(snd_swing, 1, false);
+        var _snd = audio_play_sound(snd_hit, 1, false);
+        audio_sound_pitch(_snd, 1.0 + (mash_count * 0.05));
+        
+        // Add slash to array
+        var _ang = random(360);
+        var _len = 150 + random(100);
+        var _cx = x + random_range(-50, 50);
+        var _cy = y + random_range(-50, 50);
+        array_push(slashes, {
+            x1: _cx - lengthdir_x(_len, _ang),
+            y1: _cy - lengthdir_y(_len, _ang),
+            x2: _cx + lengthdir_x(_len, _ang),
+            y2: _cy + lengthdir_y(_len, _ang),
+            frames: 10
+        });
+        
+        part_particles_create(global.part_sys, _cx, _cy, global.part_hit, 15);
+    }
+    
+    // Climax Explosion
+    if (mash_timer <= 0) {
+        repeat(50) {
+            var _ex = x + irandom_range(-250, 250);
+            var _ey = y + irandom_range(-200, 200);
+            part_particles_create(global.part_sys, _ex, _ey, global.part_explosion, 20);
+        }
+        oGame.shake_frames     = 60;
+        oGame.shake_magnitude  = 30;
+        oGame.ultimate_flash   = 1.0;
+        
+        var _score_reward = 500 + (mash_count * 50);
+        oGame.combat_score    += _score_reward;
+        oGame.combo_count     += mash_count * 5;
+        if (instance_exists(oKnight)) oKnight.adrenaline = oKnight.adrenaline_max; // Full rage meter!
+        
+        array_push(oGame.floating_texts, {
+            x: ARENA_CENTER_X, y: ARENA_CENTER_Y - 80,
+            text: "ANNIHILATED! +" + string(_score_reward), color: c_fuchsia, alpha: 3.0
+        });
+        
+        var _nuke_snd = audio_play_sound(snd_hit, 1, false);
+        audio_sound_pitch(_nuke_snd, 0.3); // Nuke
+        
+        instance_destroy();
+    }
+    
+    // Update slash fade times
+    for (var i = array_length(slashes) - 1; i >= 0; i--) {
+        slashes[i].frames--;
+        if (slashes[i].frames <= 0) {
+            array_delete(slashes, i, 1);
+        }
+    }
+    
+    exit; // Do not process normal boss logic
+}
+
 // --- Hit flash tick ---
 if (hit_flash > 0) hit_flash--;
 
@@ -43,8 +115,8 @@ if (!instance_exists(oDeathOrb) && !_waiting_for_clear) {
             x: ARENA_CENTER_X, y: y - 50,
             text: "DEATH VOLLEY!", color: c_fuchsia, alpha: 2.0
         });
-        audio_play_sound(snd_hit, 1, false);
-        audio_sound_pitch(snd_hit, 0.6); // Deep warning sound
+        var _warn_snd = audio_play_sound(snd_hit, 1, false);
+        audio_sound_pitch(_warn_snd, 0.6); // Deep warning sound
         
     } else {
         // --- NORMAL PROJECTILE ---
@@ -64,23 +136,20 @@ if (!instance_exists(oDeathOrb) && !_waiting_for_clear) {
 }
 
 // --- Death check ---
-if (hp <= 0) {
-    // Massive death explosion
-    repeat(30) {
-        var _ex = ARENA_CENTER_X + irandom_range(-200, 200);
-        var _ey = ARENA_CENTER_Y + irandom_range(-150, 150);
-        part_particles_create(global.part_sys, _ex, _ey, global.part_explosion, 20);
-    }
-    oGame.shake_frames     = 40;
-    oGame.shake_magnitude  = 20;
-    oGame.ultimate_flash   = 0.8;
-    oGame.combat_score    += 500;
-    oGame.combo_count     += 10;
-    array_push(oGame.floating_texts, {
-        x: ARENA_CENTER_X, y: ARENA_CENTER_Y - 80,
-        text: "BOSS DEFEATED! +500", color: c_yellow, alpha: 2.0
-    });
-    // Destroy all projectiles too
+if (hp <= 0 && !is_dying) {
+    is_dying = true;
+    mash_timer = 180; // 3 seconds of mashing
+    
+    // Clear all projectiles to focus entirely on the execution
     with (oBossProjectile) instance_destroy();
-    instance_destroy();
+    with (oDeathOrb) instance_destroy();
+    
+    // Initial stagger
+    oGame.shake_frames = 20;
+    oGame.shake_magnitude = 10;
+    var _stag_snd = audio_play_sound(snd_hit, 1, false);
+    audio_sound_pitch(_stag_snd, 0.5);
+    
+    // Push Boss back slightly into the background
+    y -= 30;
 }
