@@ -49,6 +49,12 @@ function spawn_wave() {
         array_push(oGame.spawn_queue, enemy_data);
     }
 
+    // Occasionally send a healer pickup, but only when the player is actually hurt.
+    if (instance_exists(oKnight) && oKnight.hp < PLAYER_MAX_HP && random(1) < HEALER_SPAWN_CHANCE) {
+        var hang = SPAWN_ARC_START + random(SPAWN_ARC_SPAN);
+        array_push(oGame.spawn_queue, { type: ENEMY_HEALER, angle: hang, x: arena_x(hang), y: arena_y(hang) });
+    }
+
     oGame.spawn_timer = 0;
 }
 
@@ -70,13 +76,15 @@ function get_wave_composition() {
         var grown_max = min(WAVE_SIZE_CAP, WAVE_SIZE_LATE_MAX + floor((t - 30) / 60));
         size = irandom_range(WAVE_SIZE_LATE_MIN, grown_max);
         for (var i = 0; i < size; i++) {
-            var roll = irandom(4);            // 5 outcomes, 20% each
+            var roll = irandom(5);            // 6 outcomes
             if (roll == 0) {
-                result[i] = ENEMY_SHIELDED;   // ~20%
+                result[i] = ENEMY_SHIELDED;   // ~17%
             } else if (roll == 1) {
-                result[i] = ENEMY_ASSASSIN;   // ~20%, now from 30s
+                result[i] = ENEMY_ASSASSIN;   // ~17%, from 30s
+            } else if (roll == 2) {
+                result[i] = ENEMY_CROSSBOW;   // ~17%, from 30s
             } else {
-                result[i] = ENEMY_BANDIT;     // ~60%
+                result[i] = ENEMY_BANDIT;     // ~50%
             }
         }
     }
@@ -88,6 +96,8 @@ function get_enemy_object(type) {
         case ENEMY_BANDIT:   return oBandit;
         case ENEMY_SHIELDED: return oShieldedBandit;
         case ENEMY_ASSASSIN: return oAssassin;
+        case ENEMY_CROSSBOW: return oCrossbowBandit;
+        case ENEMY_HEALER:   return oHealer;
         default:             return oBandit;
     }
 }

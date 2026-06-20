@@ -88,8 +88,9 @@ if ((keyboard_check_pressed(ord("X")) || mouse_check_button_pressed(mb_right))
         if (variable_instance_exists(active, "on_defended")) {
             active.on_defended(id);
         }
-    } else {
-        // Failsafe use — 5s cooldown
+    } else if (instance_number(oArrow) == 0) {
+        // Whiffed with nothing to block — failsafe cooldown.
+        // If a bolt is in flight, this press is a block attempt (oArrow reads defend_pose_timer); don't punish it.
         defend_cooldown = DEFEND_COOLDOWN_FRAMES;
     }
 }

@@ -212,11 +212,14 @@ with (oDeathOrb) {
 }
 
 
-// Attack range ring around player
+// Attack range ring and parry rings around the player
 if (instance_exists(oKnight)) {
     draw_set_color(c_yellow);
     draw_set_alpha(0.25);
     draw_circle(oKnight.x, oKnight.y, ATTACK_RANGE, true);
+    draw_set_color(c_aqua);
+    draw_set_alpha(0.5);
+    draw_circle(oKnight.x, oKnight.y, PERFECT_PARRY_RANGE, true);
     draw_set_alpha(1.0);
 }
 

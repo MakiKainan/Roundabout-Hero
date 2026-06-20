@@ -24,13 +24,27 @@
 #macro ATTACK_RANGE 130              // tightened from 184 — the wide flat ellipse made the ring feel huge (smaller = closer hits, tighter reaction)
 #macro ATTACK_COOLDOWN_FRAMES 180    // 3s miss penalty at 60fps
 #macro DEFEND_COOLDOWN_FRAMES 300    // 5s failsafe penalty at 60fps
+
+// Parry rework — two concentric rings around the knight
+#macro PERFECT_PARRY_RANGE 70        // inner ring: Defend with an enemy inside this = perfect parry (kill). Must be < ATTACK_RANGE
+#macro IMPERFECT_PARRY_SLOW 0.6      // speed kept after an imperfect-parry knockback (slows the enemy)
+#macro IMPERFECT_PARRY_COOLDOWN 120  // 2s defend lockout after an imperfect parry
 #macro ASSASSIN_BACKSTEP_DIST 180    // ~177px chord, clearly leaves attack range
 #macro ASSASSIN_BACKSTEP_FREEZE 75   // frames frozen after backstep (~1.25s)
 
 // Enemies
-#macro ENEMY_SIZE 28                 // visual size (smaller than contact dist, purely cosmetic)
+#macro ENEMY_SIZE 30                 // fallback-square size (bumped ~+7% per hitbox request; combat is distance-based, see ENEMY_CONTACT_DIST)
 #macro BASE_ENEMY_SPEED 1.8
 #macro ENEMY_CONTACT_DIST 46         // enemy hits the player within this distance of the front rim
+
+// Crossbow bandit — ranged enemy that holds way back and fires bolts
+#macro CROSSBOW_HOLD_ANGLE 120       // holds this many degrees of arc from the player (bigger = further back / higher up). ~half the arena
+#macro CROSSBOW_SHOOT_INTERVAL 100   // frames between bolts (~1.7s)
+#macro ARROW_SPEED 7                 // bolt travel speed (px/frame)
+#macro CROSSBOW_SPEED_MULT 1.5       // moves/charges faster than a base bandit (gets to its hold spot quickly)
+
+// Healer pickup
+#macro HEALER_SPAWN_CHANCE 0.35      // chance per normal wave to send a healer (only when the player is hurt)
 
 // Spawn arc — upper half of the circle (90 = top, 270 = bottom/player)
 #macro SPAWN_ARC_START 20            // degrees; lower edge of upper-half arc
@@ -57,6 +71,8 @@
 #macro ENEMY_BANDIT 0
 #macro ENEMY_SHIELDED 1
 #macro ENEMY_ASSASSIN 2
+#macro ENEMY_CROSSBOW 3
+#macro ENEMY_HEALER 4
 
 // Boss
 #macro BOSS_WAVE_INTERVAL 5         // Boss appears every 5 waves

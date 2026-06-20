@@ -32,36 +32,8 @@ if (state == "moving") {
 
     // Stop and attack when very close to the player!
     if (point_distance(x, y, oKnight.x, oKnight.y) <= ENEMY_CONTACT_DIST + 5) {
-        if (oKnight.perfect_parry_window > 0) {
-            // PERFECT PARRY
-            oGame.shake_frames = 20;
-            oGame.shake_magnitude = 12;
-            oGame.hit_stop_frames = 12;
-            oGame.combo_count++;
-            oGame.combo_timer = 180;
-            oGame.combat_score += 50; // Bonus for parry
-            oGame.style_score += 80;
-            oKnight.adrenaline = min(oKnight.adrenaline_max, oKnight.adrenaline + 25);
-            audio_play_sound(snd_hit, 1, false);
-            part_particles_create(global.part_sys, x, y, global.part_hit, 30);
-            array_push(oGame.floating_texts, {x: x, y: y - 40, text: "PERFECT!", color: c_yellow, alpha: 1.5});
-            
-            part_particles_create(global.part_sys, x, y, global.part_explosion, 10);
-            
-            var _ax = x; var _ay = y; var _aid = id;
-            with (par_enemy) {
-                if (id != _aid && point_distance(x, y, _ax, _ay) < 150) {
-                    if (enemy_type == ENEMY_SHIELDED && !is_vulnerable) continue;
-                    instance_destroy(); oGame.combo_count++; oGame.combat_score += 10; oGame.style_score += 15;
-                }
-            }
-            
-            instance_destroy();
-            exit;
-        }
-
         state = "attacking";
-        
+
         // Deal damage IMMEDIATELY on contact
         oKnight.hp--;
         oKnight.adrenaline = max(0, oKnight.adrenaline - 30);
@@ -74,7 +46,7 @@ if (state == "moving") {
         if (oKnight.hp <= 0) {
             oGame.game_state = STATE_GAME_OVER;
         }
-        
+
         var fight_spr = asset_get_index("spr_bandit_attack");
         if (sprite_exists(fight_spr)) {
             sprite_index = fight_spr;
