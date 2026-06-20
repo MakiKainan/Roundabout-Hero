@@ -3,6 +3,7 @@ hp          = BOSS_MAX_HP;
 max_hp      = BOSS_MAX_HP;
 attack_timer = 60;  // First attack after 1 second so the entrance feels dramatic
 enemy_type  = -1;   // Boss is not a normal enemy type
+attack_counter = 0; // Tracks number of attacks to trigger Death Volley
 
 // Entrance: boss sinks in from above
 enter_timer = 90;          // frames of entrance animation

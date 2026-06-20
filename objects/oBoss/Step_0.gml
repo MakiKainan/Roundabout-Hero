@@ -21,21 +21,46 @@ if (!enter_done) {
 if (hit_flash > 0) hit_flash--;
 
 // --- Attack cycle ---
-attack_timer--;
-if (attack_timer <= 0) {
+// Don't count down the timer if a Death Orb exists, OR if we are about to launch a Death Volley and there are still normal projectiles on screen.
+var _waiting_for_clear = (((attack_counter + 1) % 3 == 0) && instance_exists(oBossProjectile));
+
+if (!instance_exists(oDeathOrb) && !_waiting_for_clear) {
+    attack_timer--;
+    if (attack_timer <= 0) {
     attack_timer = BOSS_ATTACK_INTERVAL;
 
-    // Spawn ONE projectile from a random side of the upper arc
-    var _start_angles = [SPAWN_ARC_START + 20, SPAWN_ARC_START + SPAWN_ARC_SPAN - 20]; // e.g. ~40° and ~120°
-    var _sa    = _start_angles[irandom(1)];
-    var _proj  = instance_create_layer(arena_x(_sa), arena_y(_sa), "Instances", oBossProjectile);
+    attack_counter++;
     
-    _proj.circle_angle = _sa;
-    _proj.angle_spd    = BOSS_PROJ_SPEED; // degrees per frame
-    _proj.proj_type    = (irandom(1) == 0) ? PROJ_TYPE_FIRE : PROJ_TYPE_MAGIC;
-    _proj.boss_id      = id;
-    _proj.reflected    = false;
-    _proj.has_hit      = false;
+    if (attack_counter % 3 == 0) {
+        // --- DEATH VOLLEY! ---
+        var _orb = instance_create_layer(ARENA_CENTER_X, y, "Instances", oDeathOrb);
+        _orb.boss_id = id;
+        
+        // Massive warning
+        oGame.shake_frames = 20;
+        oGame.shake_magnitude = 8;
+        array_push(oGame.floating_texts, {
+            x: ARENA_CENTER_X, y: y - 50,
+            text: "DEATH VOLLEY!", color: c_fuchsia, alpha: 2.0
+        });
+        audio_play_sound(snd_hit, 1, false);
+        audio_sound_pitch(snd_hit, 0.6); // Deep warning sound
+        
+    } else {
+        // --- NORMAL PROJECTILE ---
+        // Spawn ONE projectile from a random side of the upper arc
+        var _start_angles = [SPAWN_ARC_START + 20, SPAWN_ARC_START + SPAWN_ARC_SPAN - 20]; // e.g. ~40° and ~120°
+        var _sa    = _start_angles[irandom(1)];
+        var _proj  = instance_create_layer(arena_x(_sa), arena_y(_sa), "Instances", oBossProjectile);
+        
+        _proj.circle_angle = _sa;
+        _proj.angle_spd    = BOSS_PROJ_SPEED; // degrees per frame
+        _proj.proj_type    = (irandom(1) == 0) ? PROJ_TYPE_FIRE : PROJ_TYPE_MAGIC;
+        _proj.boss_id      = id;
+        _proj.reflected    = false;
+        _proj.has_hit      = false;
+    }
+}
 }
 
 // --- Death check ---

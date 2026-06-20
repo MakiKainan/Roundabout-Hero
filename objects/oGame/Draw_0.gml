@@ -139,6 +139,46 @@ with (oBossProjectile) {
     draw_set_halign(fa_left);
 }
 
+// Death Orb (drawn massive and scary)
+with (oDeathOrb) {
+    var _pulse = abs(sin(current_time * 0.01 + pulse)) * 0.3 + 0.7;
+    var _base_rad = 35 + (volley_count * 2);
+    
+    // Aura
+    draw_set_alpha(_pulse * 0.5);
+    draw_set_color(c_fuchsia);
+    draw_circle(x + random_range(-5, 5), y + random_range(-5, 5), _base_rad * 1.5, false);
+    draw_set_color(c_red);
+    draw_circle(x, y, _base_rad * 1.2, false);
+    
+    // Core
+    draw_set_alpha(1.0);
+    draw_set_color(c_black);
+    draw_circle(x, y, _base_rad, false);
+    
+    // Outer rim
+    draw_set_color(c_red);
+    draw_circle(x, y, _base_rad, true);
+    draw_circle(x, y, _base_rad - 1, true);
+    draw_circle(x, y, _base_rad - 2, true);
+    
+    // Trailing shadow
+    draw_set_alpha(0.3);
+    draw_set_color(c_black);
+    draw_circle(x - lengthdir_x(_base_rad, direction), y - lengthdir_y(_base_rad, direction), _base_rad * 0.8, false);
+    
+    // Hint text for player
+    if (direction == 270) {
+        draw_set_alpha(1.0);
+        draw_set_color(c_white);
+        draw_set_halign(fa_center);
+        draw_text(x, y - 10, "Z/X");
+        draw_set_halign(fa_left);
+    }
+    
+    draw_set_alpha(1.0);
+}
+
 
 // Attack range ring around player
 if (instance_exists(oKnight)) {
