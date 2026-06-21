@@ -3,7 +3,6 @@ if (oGame.hit_stop_frames > 0) { image_index -= image_speed; exit; }
 
 depth = -y;
 
-// --- Backstep freeze: play backstep sprite REVERSED (snaps back), purple burst once ---
 if (backstep_timer > 0) {
     if (!backstep_anim) {
         backstep_anim = true;
@@ -15,6 +14,13 @@ if (backstep_timer > 0) {
         }
         part_particles_create(global.part_sys, x, y, global.part_teleport, 20);
     }
+    
+    // If playing backwards, lock it on the first frame so it doesn't loop forever
+    if (image_speed < 0 && image_index <= 1) {
+        image_speed = 0;
+        image_index = 0;
+    }
+    
     backstep_timer--;
     exit;
 }

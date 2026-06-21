@@ -3,7 +3,8 @@ if (oGame.game_state == STATE_GAME_OVER) exit;
 var spr = sprite_index;
 if (sprite_exists(spr) && spr != -1) {
     var facing = (oKnight.x >= x) ? 1 : -1;
-    draw_sprite_ext(spr, image_index, x, y, facing * BANDIT_DRAW_SCALE, BANDIT_DRAW_SCALE, 0, c_white, 1);
+    var _col = (spr == asset_get_index("spr_bandit_walk")) ? c_fuchsia : c_white;
+    draw_sprite_ext(spr, image_index, x, y, facing * BANDIT_DRAW_SCALE, BANDIT_DRAW_SCALE, 0, _col, 1);
 } else {
     // Fallback: yellow square
     draw_set_color(c_yellow);

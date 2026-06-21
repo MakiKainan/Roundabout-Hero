@@ -48,6 +48,7 @@
     {"id":{"name":"spr_bg_4","path":"sprites/spr_bg_4/spr_bg_4.yy",},},
     {"id":{"name":"spr_bg_5","path":"sprites/spr_bg_5/spr_bg_5.yy",},},
     {"id":{"name":"spr_bg_6","path":"sprites/spr_bg_6/spr_bg_6.yy",},},
+    {"id":{"name":"spr_crossbow_bandit_walk","path":"sprites/spr_crossbow_bandit_walk/spr_crossbow_bandit_walk.yy",},},
     {"id":{"name":"spr_knight_attack","path":"sprites/spr_knight_attack/spr_knight_attack.yy",},},
     {"id":{"name":"spr_knight_defend","path":"sprites/spr_knight_defend/spr_knight_defend.yy",},},
     {"id":{"name":"spr_knight_idle","path":"sprites/spr_knight_idle/spr_knight_idle.yy",},},
