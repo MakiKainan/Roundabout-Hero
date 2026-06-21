@@ -26,6 +26,7 @@
     {"id":{"name":"oBossProjectile","path":"objects/oBossProjectile/oBossProjectile.yy",},},
     {"id":{"name":"oCrossbowBandit","path":"objects/oCrossbowBandit/oCrossbowBandit.yy",},},
     {"id":{"name":"oDeathOrb","path":"objects/oDeathOrb/oDeathOrb.yy",},},
+    {"id":{"name":"oExecutionOrb","path":"objects/oExecutionOrb/oExecutionOrb.yy",},},
     {"id":{"name":"oGame","path":"objects/oGame/oGame.yy",},},
     {"id":{"name":"oHealer","path":"objects/oHealer/oHealer.yy",},},
     {"id":{"name":"oKnight","path":"objects/oKnight/oKnight.yy",},},

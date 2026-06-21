@@ -112,8 +112,41 @@ if (game_state == STATE_PLAYING) {
             spawn_timer = ENEMY_SPAWN_DELAY_FRAMES;
         }
     } else if (instance_number(par_enemy) == 0) {
-        game_state = STATE_WAVE_PAUSE;
-        wave_pause_timer = WAVE_PAUSE_FRAMES;
+        if (wave_number > 0 && wave_number % 3 == 0 && wave_number % BOSS_WAVE_INTERVAL != 0) {
+            game_state = STATE_BOON_CHOICE;
+            // Spawn Boon Orbs
+            var _orb_heal = instance_create_layer(ARENA_CENTER_X, ARENA_CENTER_Y, "Instances", oExecutionOrb);
+            _orb_heal.orb_type = "HEAL";
+            _orb_heal.circle_angle = 150; // Pulled in from 180 to avoid screen edge clipping
+            
+            var _orb_gold = instance_create_layer(ARENA_CENTER_X, ARENA_CENTER_Y, "Instances", oExecutionOrb);
+            _orb_gold.orb_type = "GOLD";
+            _orb_gold.circle_angle = 30; // Pulled in from 0
+            
+            var _orb_rage = instance_create_layer(ARENA_CENTER_X, ARENA_CENTER_Y, "Instances", oExecutionOrb);
+            _orb_rage.orb_type = "RAGE";
+            _orb_rage.circle_angle = 90;
+            
+            shake_frames = 20;
+            shake_magnitude = 15;
+            ultimate_flash = 0.5;
+            var _snd = audio_play_sound(snd_hit, 1, false);
+            audio_sound_pitch(_snd, 0.5);
+        } else {
+            game_state = STATE_WAVE_PAUSE;
+            wave_pause_timer = WAVE_PAUSE_FRAMES;
+        }
+    }
+}
+
+if (game_state == STATE_BOON_CHOICE) {
+    // Listen for player choice
+    if (keyboard_check_pressed(ord("Z")) || mouse_check_button_pressed(mb_left)) {
+        with (oExecutionOrb) if (orb_type == "HEAL") on_attacked(oKnight);
+    } else if (keyboard_check_pressed(ord("X")) || mouse_check_button_pressed(mb_right)) {
+        with (oExecutionOrb) if (orb_type == "GOLD") on_attacked(oKnight);
+    } else if (keyboard_check_pressed(vk_space)) {
+        with (oExecutionOrb) if (orb_type == "RAGE") on_attacked(oKnight);
     }
 }
 

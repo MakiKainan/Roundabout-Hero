@@ -19,40 +19,47 @@ if (!enter_done) {
 
 // --- Death Execution Loop ---
 if (is_dying) {
-    // Freeze the rest of the game
-    oGame.hit_stop_frames = 2; 
-    
-    mash_timer--;
-    
-    // Listen for mashing
-    if (keyboard_check_pressed(ord("Z")) || keyboard_check_pressed(ord("X")) || mouse_check_button_pressed(mb_left)) {
-        mash_count++;
+    if (mash_timer > 0) {
+        // Freeze the rest of the game
+        oGame.hit_stop_frames = 2; 
+        mash_timer--;
         
-        // Massive juice per hit
-        oGame.shake_frames = 10;
-        oGame.shake_magnitude = 15 + min(mash_count, 20);
-        audio_play_sound(snd_swing, 1, false);
-        var _snd = audio_play_sound(snd_hit, 1, false);
-        audio_sound_pitch(_snd, 1.0 + (mash_count * 0.05));
+        // Listen for mashing
+        if (keyboard_check_pressed(ord("Z")) || keyboard_check_pressed(ord("X")) || mouse_check_button_pressed(mb_left)) {
+            mash_count++;
+            
+            // Massive juice per hit
+            oGame.shake_frames = 10;
+            oGame.shake_magnitude = 15 + min(mash_count, 20);
+            audio_play_sound(snd_swing, 1, false);
+            var _snd = audio_play_sound(snd_hit, 1, false);
+            audio_sound_pitch(_snd, 1.0 + (mash_count * 0.05));
+            
+            // Add slash to array
+            var _ang = random(360);
+            var _len = 150 + random(100);
+            var _cx = x + random_range(-50, 50);
+            var _cy = y + random_range(-50, 50);
+            array_push(slashes, {
+                x1: _cx - lengthdir_x(_len, _ang),
+                y1: _cy - lengthdir_y(_len, _ang),
+                x2: _cx + lengthdir_x(_len, _ang),
+                y2: _cy + lengthdir_y(_len, _ang),
+                frames: 10
+            });
+            
+            part_particles_create(global.part_sys, _cx, _cy, global.part_hit, 15);
+        }
         
-        // Add slash to array
-        var _ang = random(360);
-        var _len = 150 + random(100);
-        var _cx = x + random_range(-50, 50);
-        var _cy = y + random_range(-50, 50);
-        array_push(slashes, {
-            x1: _cx - lengthdir_x(_len, _ang),
-            y1: _cy - lengthdir_y(_len, _ang),
-            x2: _cx + lengthdir_x(_len, _ang),
-            y2: _cy + lengthdir_y(_len, _ang),
-            frames: 10
-        });
-        
-        part_particles_create(global.part_sys, _cx, _cy, global.part_hit, 15);
-    }
-    
-    // Climax Explosion
-    if (mash_timer <= 0) {
+        // Update slash fade times
+        for (var i = array_length(slashes) - 1; i >= 0; i--) {
+            slashes[i].frames--;
+            if (slashes[i].frames <= 0) {
+                array_delete(slashes, i, 1);
+            }
+        }
+    } else {
+        // Climax Explosion
         repeat(50) {
             var _ex = x + irandom_range(-250, 250);
             var _ey = y + irandom_range(-200, 200);
@@ -77,15 +84,6 @@ if (is_dying) {
         
         instance_destroy();
     }
-    
-    // Update slash fade times
-    for (var i = array_length(slashes) - 1; i >= 0; i--) {
-        slashes[i].frames--;
-        if (slashes[i].frames <= 0) {
-            array_delete(slashes, i, 1);
-        }
-    }
-    
     exit; // Do not process normal boss logic
 }
 
@@ -139,6 +137,7 @@ if (!instance_exists(oDeathOrb) && !_waiting_for_clear) {
 if (hp <= 0 && !is_dying) {
     is_dying = true;
     mash_timer = 180; // 3 seconds of mashing
+    mash_count = 0;
     
     // Clear all projectiles to focus entirely on the execution
     with (oBossProjectile) instance_destroy();

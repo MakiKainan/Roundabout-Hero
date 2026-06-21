@@ -66,6 +66,7 @@
 #macro STATE_WAVE_PAUSE 1
 #macro STATE_GAME_OVER 2
 #macro STATE_PAUSED 3
+#macro STATE_BOON_CHOICE 4
 
 // Enemy type identifiers
 #macro ENEMY_BANDIT 0

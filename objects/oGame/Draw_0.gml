@@ -368,6 +368,20 @@ if (style_display_score >= 0.5) {
 draw_set_alpha(1.0);
 draw_set_halign(fa_left);
 
+// Boon Choice overlay
+if (game_state == STATE_BOON_CHOICE) {
+    draw_set_color(c_black);
+    draw_set_alpha(0.7);
+    draw_rectangle(0, 0, room_width, room_height, false);
+    draw_set_alpha(1.0);
+    
+    draw_set_halign(fa_center);
+    draw_set_color(c_white);
+    var _pulse = 1.2 + abs(sin(current_time * 0.005)) * 0.2;
+    draw_text_transformed(ARENA_CENTER_X, ARENA_CENTER_Y - 140, "DIVINE INTERVENTION", _pulse, _pulse, 0);
+    draw_set_halign(fa_left);
+}
+
 // Game over overlay
 if (game_state == STATE_GAME_OVER) {
     draw_set_color(c_black);
