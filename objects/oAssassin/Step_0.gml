@@ -3,7 +3,6 @@ if (oGame.hit_stop_frames > 0) { image_index -= image_speed; exit; }
 
 depth = -y;
 
-// --- Backstep freeze: play backstep sprite REVERSED (snaps back), purple burst once ---
 if (backstep_timer > 0) {
     if (!backstep_anim) {
         backstep_anim = true;
@@ -15,6 +14,13 @@ if (backstep_timer > 0) {
         }
         part_particles_create(global.part_sys, x, y, global.part_teleport, 20);
     }
+    
+    // If playing backwards, lock it on the first frame so it doesn't loop forever
+    if (image_speed < 0 && image_index <= 1) {
+        image_speed = 0;
+        image_index = 0;
+    }
+    
     backstep_timer--;
     exit;
 }
@@ -22,8 +28,11 @@ backstep_anim = false; // freeze over — resume walk
 
 if (state == "moving") {
     var spr = asset_get_index("spr_assassin_walk");
-    if (sprite_exists(spr) && sprite_index != spr) { sprite_index = spr; image_speed = 2; }
-    if (image_speed < 0) image_speed = 2; // recover from backstep reverse
+    if (sprite_exists(spr) && sprite_index != spr) { 
+        sprite_index = spr; 
+        image_speed = 2; 
+    }
+    if (image_speed <= 0) image_speed = 2; // guaranteed recovery from backstep reverse/freeze
 
     var player_angle = point_direction(ARENA_CENTER_X, ARENA_CENTER_Y, oKnight.x, oKnight.y);
     var diff = angle_difference(player_angle, circle_angle);

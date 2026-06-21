@@ -1,3 +1,6 @@
+// --- UNLIMITED HEALTH DEMO ---
+hp = 999;
+
 if (oGame.game_state != STATE_PLAYING) {
     image_speed = 0;
     exit;
@@ -57,8 +60,9 @@ if ((keyboard_check_pressed(ord("Z")) || mouse_check_button_pressed(mb_left))
     image_speed = 3;
 
     var active = instance_nearest(x, y, par_enemy);
+    var _current_range = ATTACK_RANGE + (oGame.combo_count >= 50 ? 40 : 0);
 
-    if (active != noone && point_distance(x, y, active.x, active.y) <= ATTACK_RANGE) {
+    if (active != noone && point_distance(x, y, active.x, active.y) <= _current_range) {
         // Use OCP method on the active enemy
         if (variable_instance_exists(active, "on_attacked")) {
             active.on_attacked(id);
@@ -83,8 +87,9 @@ if ((keyboard_check_pressed(ord("X")) || mouse_check_button_pressed(mb_right))
     image_speed = 3;
 
     var active = instance_nearest(x, y, par_enemy);
+    var _current_range = ATTACK_RANGE + (oGame.combo_count >= 50 ? 40 : 0);
 
-    if (active != noone && point_distance(x, y, active.x, active.y) <= ATTACK_RANGE) {
+    if (active != noone && point_distance(x, y, active.x, active.y) <= _current_range) {
         if (variable_instance_exists(active, "on_defended")) {
             active.on_defended(id);
         }
@@ -100,17 +105,41 @@ if (keyboard_check_pressed(vk_space) && adrenaline >= adrenaline_max) {
     adrenaline = 0;
     
     oGame.ultimate_flash = 1.0;
-    oGame.shake_frames = 30;
-    oGame.shake_magnitude = 20;
-    oGame.hit_stop_frames = 15;
+    oGame.shake_frames = 40;
+    oGame.shake_magnitude = 25;
+    oGame.hit_stop_frames = 20;
     
-    audio_play_sound(snd_hit, 1, false);
-    array_push(oGame.floating_texts, {x: ARENA_CENTER_X, y: ARENA_CENTER_Y - 100, text: "ULTIMATE UNLEASHED!", color: c_fuchsia, alpha: 2.0});
+    var _screech = audio_play_sound(snd_swing, 1, false);
+    audio_sound_pitch(_screech, 2.5); // High pitched eagle screech
+    var _boom = audio_play_sound(snd_hit, 1, false);
+    audio_sound_pitch(_boom, 0.4); // Deep rumble
     
+    array_push(oGame.floating_texts, {x: ARENA_CENTER_X, y: ARENA_CENTER_Y - 100, text: "TACTICAL FREEDOM!", color: c_fuchsia, alpha: 2.0});
+    
+    // Annihilate all enemies
     with (par_enemy) {
         part_particles_create(global.part_sys, x, y, global.part_explosion, 20);
         oGame.combat_score += 20;
         oGame.combo_count++;
+        instance_destroy();
+    }
+    
+    // Annihilate Boss Projectiles
+    with (oBossProjectile) {
+        part_particles_create(global.part_sys, x, y, global.part_explosion, 10);
+        instance_destroy();
+    }
+    
+    // Annihilate Death Orb
+    with (oDeathOrb) {
+        part_particles_create(global.part_sys, x, y, global.part_explosion, 30);
+        oGame.combat_score += 500;
+        instance_destroy();
+    }
+    
+    // Annihilate Arrows
+    with (oArrow) {
+        part_particles_create(global.part_sys, x, y, global.part_explosion, 5);
         instance_destroy();
     }
 }

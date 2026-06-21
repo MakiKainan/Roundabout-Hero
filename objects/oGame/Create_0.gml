@@ -40,6 +40,31 @@ part_type_speed(global.part_hit, 2, 6, -0.1, 0);
 part_type_direction(global.part_hit, 0, 359, 0, 0);
 part_type_life(global.part_hit, 15, 30);
 
+// Star-Spangled Particles
+global.part_star_red = part_type_create();
+part_type_shape(global.part_star_red, pt_shape_star);
+part_type_size(global.part_star_red, 0.2, 0.5, -0.01, 0);
+part_type_color1(global.part_star_red, c_red);
+part_type_speed(global.part_star_red, 4, 10, -0.1, 0);
+part_type_direction(global.part_star_red, 0, 359, 0, 0);
+part_type_life(global.part_star_red, 20, 40);
+
+global.part_star_white = part_type_create();
+part_type_shape(global.part_star_white, pt_shape_star);
+part_type_size(global.part_star_white, 0.2, 0.5, -0.01, 0);
+part_type_color1(global.part_star_white, c_white);
+part_type_speed(global.part_star_white, 4, 10, -0.1, 0);
+part_type_direction(global.part_star_white, 0, 359, 0, 0);
+part_type_life(global.part_star_white, 20, 40);
+
+global.part_star_blue = part_type_create();
+part_type_shape(global.part_star_blue, pt_shape_star);
+part_type_size(global.part_star_blue, 0.2, 0.5, -0.01, 0);
+part_type_color1(global.part_star_blue, c_blue);
+part_type_speed(global.part_star_blue, 4, 10, -0.1, 0);
+part_type_direction(global.part_star_blue, 0, 359, 0, 0);
+part_type_life(global.part_star_blue, 20, 40);
+
 // Explosion Particle Type
 global.part_explosion = part_type_create();
 part_type_shape(global.part_explosion, pt_shape_circle);
@@ -90,6 +115,9 @@ if (sprite_exists(b_walk) && sprite_exists(b_attack)) {
     // Force the attack sprite to share the exact same origin as the walk sprite
     sprite_set_offset(b_attack, sprite_get_xoffset(b_walk), sprite_get_yoffset(b_walk));
 }
+
+var cb_walk = asset_get_index("spr_crossbow_bandit_walk");
+auto_align_sprite_origin(cb_walk);
 
 // Shielded bandit: ground the walk sprite on its feet, then share that origin across states
 var s_walk = asset_get_index("spr_shielded_walk");

@@ -171,6 +171,51 @@ with (oBossProjectile) {
     draw_set_halign(fa_left);
 }
 
+// Arrows
+with (oArrow) {
+    var _len = 25;
+    var _dx = lengthdir_x(1, dir);
+    var _dy = lengthdir_y(1, dir);
+    var _tail_x = x - _dx * _len;
+    var _tail_y = y - _dy * _len;
+    var _head_x = x + _dx * _len;
+    var _head_y = y + _dy * _len;
+
+    // Glow
+    draw_set_alpha(0.5);
+    draw_set_color(c_aqua);
+    draw_line_width(_tail_x, _tail_y, _head_x, _head_y, 8);
+
+    // Core
+    draw_set_alpha(1.0);
+    draw_set_color(c_white);
+    draw_line_width(_tail_x, _tail_y, _head_x, _head_y, 3);
+
+    // Arrowhead
+    draw_set_color(c_aqua);
+    draw_triangle(
+        _head_x + lengthdir_x(12, dir), _head_y + lengthdir_y(12, dir),
+        _head_x + lengthdir_x(15, dir + 135), _head_y + lengthdir_y(15, dir + 135),
+        _head_x + lengthdir_x(15, dir - 135), _head_y + lengthdir_y(15, dir - 135),
+        false
+    );
+    draw_set_color(c_white);
+    draw_triangle(
+        _head_x + lengthdir_x(8, dir), _head_y + lengthdir_y(8, dir),
+        _head_x + lengthdir_x(10, dir + 135), _head_y + lengthdir_y(10, dir + 135),
+        _head_x + lengthdir_x(10, dir - 135), _head_y + lengthdir_y(10, dir - 135),
+        false
+    );
+
+    // Prompt
+    draw_set_halign(fa_center);
+    draw_set_color(c_aqua);
+    draw_text(x, y + 20, "X");
+    
+    draw_set_halign(fa_left);
+    draw_set_color(c_white);
+}
+
 // Death Orb (drawn massive and scary)
 with (oDeathOrb) {
     var _pulse = abs(sin(current_time * 0.01 + pulse)) * 0.3 + 0.7;
@@ -214,9 +259,19 @@ with (oDeathOrb) {
 
 // Attack range ring and parry rings around the player
 if (instance_exists(oKnight)) {
-    draw_set_color(c_yellow);
-    draw_set_alpha(0.25);
-    draw_circle(oKnight.x, oKnight.y, ATTACK_RANGE, true);
+    var _current_range = ATTACK_RANGE;
+    var _col = c_yellow;
+    var _alpha = 0.25;
+    
+    if (combo_count >= 50) {
+        _current_range += 40;
+        _alpha = 0.5 + lengthdir_x(0.2, current_time * 0.5);
+    }
+    
+    draw_set_color(_col);
+    draw_set_alpha(_alpha);
+    draw_circle(oKnight.x, oKnight.y, _current_range, true);
+    
     draw_set_color(c_aqua);
     draw_set_alpha(0.5);
     draw_circle(oKnight.x, oKnight.y, PERFECT_PARRY_RANGE, true);
@@ -312,6 +367,20 @@ if (style_display_score >= 0.5) {
 }
 draw_set_alpha(1.0);
 draw_set_halign(fa_left);
+
+// Boon Choice overlay
+if (game_state == STATE_BOON_CHOICE) {
+    draw_set_color(c_black);
+    draw_set_alpha(0.7);
+    draw_rectangle(0, 0, room_width, room_height, false);
+    draw_set_alpha(1.0);
+    
+    draw_set_halign(fa_center);
+    draw_set_color(c_white);
+    var _pulse = 1.2 + abs(sin(current_time * 0.005)) * 0.2;
+    draw_text_transformed(ARENA_CENTER_X, ARENA_CENTER_Y - 140, "DIVINE INTERVENTION", _pulse, _pulse, 0);
+    draw_set_halign(fa_left);
+}
 
 // Game over overlay
 if (game_state == STATE_GAME_OVER) {

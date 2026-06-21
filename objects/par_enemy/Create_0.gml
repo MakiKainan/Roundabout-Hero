@@ -10,7 +10,13 @@ on_attacked = function(knight) {
     oGame.combo_count++; // Intentionally double incrementing based on original logic
     oGame.combat_score += 10 + (oGame.combo_count * 2);
     audio_play_sound(snd_hit, 1, false);
-    part_particles_create(global.part_sys, x, y, global.part_hit, 20);
+    if (oGame.combo_count >= 50) {
+        part_particles_create(global.part_sys, x, y, global.part_star_red, 10);
+        part_particles_create(global.part_sys, x, y, global.part_star_white, 10);
+        part_particles_create(global.part_sys, x, y, global.part_star_blue, 10);
+    } else {
+        part_particles_create(global.part_sys, x, y, global.part_hit, 20);
+    }
     
     if (oGame.fever_mode) {
         part_particles_create(global.part_sys, x, y, global.part_explosion, 5);
@@ -44,8 +50,14 @@ on_defended = function(knight) {
         oGame.style_score += 80;
         knight.adrenaline = min(knight.adrenaline_max, knight.adrenaline + 25);
         audio_play_sound(snd_hit, 1, false);
-        part_particles_create(global.part_sys, x, y, global.part_hit, 30);
-        part_particles_create(global.part_sys, x, y, global.part_explosion, 10);
+        if (oGame.combo_count >= 50) {
+            part_particles_create(global.part_sys, x, y, global.part_star_red, 15);
+            part_particles_create(global.part_sys, x, y, global.part_star_white, 15);
+            part_particles_create(global.part_sys, x, y, global.part_star_blue, 15);
+        } else {
+            part_particles_create(global.part_sys, x, y, global.part_hit, 30);
+            part_particles_create(global.part_sys, x, y, global.part_explosion, 10);
+        }
         array_push(oGame.floating_texts, {x: x, y: y - 40, text: "PERFECT!", color: c_yellow, alpha: 1.5});
 
         if (oGame.fever_mode) {

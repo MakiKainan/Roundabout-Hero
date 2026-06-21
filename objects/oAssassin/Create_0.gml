@@ -19,6 +19,14 @@ on_attacked = function(knight) {
         x = arena_x(circle_angle);
         y = arena_y(circle_angle);
     } else {
+        if (backstep_timer > 0) {
+            // Whiff - assassin is dodging!
+            knight.attack_cooldown = ATTACK_COOLDOWN_FRAMES;
+            oGame.combo_count = max(0, oGame.combo_count - 1);
+            oGame.combo_timer = 0;
+            return;
+        }
+        
         oGame.shake_frames = 10;
         oGame.shake_magnitude = 5;
         oGame.hit_stop_frames = 4;
