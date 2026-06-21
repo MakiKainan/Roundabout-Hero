@@ -30,7 +30,7 @@
 #macro IMPERFECT_PARRY_SLOW 0.6      // speed kept after an imperfect-parry knockback (slows the enemy)
 #macro IMPERFECT_PARRY_COOLDOWN 120  // 2s defend lockout after an imperfect parry
 #macro ASSASSIN_BACKSTEP_DIST 180    // ~177px chord, clearly leaves attack range
-#macro ASSASSIN_BACKSTEP_FREEZE 75   // frames frozen after backstep (~1.25s)
+#macro ASSASSIN_BACKSTEP_FREEZE 20   // frames frozen after backstep (~0.3s) so it doesn't look stuck
 
 // Enemies
 #macro ENEMY_SIZE 30                 // fallback-square size (bumped ~+7% per hitbox request; combat is distance-based, see ENEMY_CONTACT_DIST)
