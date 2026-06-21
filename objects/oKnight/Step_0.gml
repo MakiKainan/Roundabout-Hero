@@ -1,3 +1,6 @@
+// --- UNLIMITED HEALTH DEMO ---
+hp = 999;
+
 if (oGame.game_state != STATE_PLAYING) {
     image_speed = 0;
     exit;
